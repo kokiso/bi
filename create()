@@ -1,0 +1,4 @@
+Psy Shell v0.9.9 (PHP 7.3.6 — cli) by Justin Hileman
+PHP Warning:  include(factor(app/User::class,20)-): failed to open stream: No such file or directory in D:/xampp/htdocs/dashboard/vendor/psy/psysh/src/ExecutionLoop.php on line 48
+
+Exit:  Ctrl+D
