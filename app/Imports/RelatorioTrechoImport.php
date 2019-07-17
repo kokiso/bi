@@ -4,8 +4,9 @@ namespace App\Imports;
 
 use App\Models\RelatorioTrecho;
 use Maatwebsite\Excel\Concerns\ToModel;
+use Maatwebsite\Excel\Concerns\WithHeadingRow;
 
-class RelatorioTrechoImport implements ToModel
+class RelatorioTrechoImport implements ToModel, WithHeadingRow
 {
     /**
     * @param array $row
@@ -16,17 +17,26 @@ class RelatorioTrechoImport implements ToModel
     {
         return new RelatorioTrecho([
             //
-            'motorista' => $row[0],
-            'veiculo' => $row[1],
-            'motor_ligado' => $row[2],
-            'parada_motor_ligado' => $row[3],
-            'tempo_motor_ligado' => $row[4],
-            'hodometro' => $row[5],
-            'distancia' => $row[6],
-            'consumo' => $row[7],
-            'rendimento' => $row[8],
-            'faixa_verde' => $row[9],
-            'veiculo_desligado' => $row[10],
+            'motorista' => $this->clearStr($row['motorista']),
+            'veiculo' => $this->clearStr($row['veiculo']),
+            'motor_ligado' => $this->clearStr($row['motor_ligado_hhmmss']),
+            'parada_motor_ligado' => $this->clearStr($row['parada_com_o_motor_ligado_hhmmss']),
+            'tempo_motor_ligado' => $this->clearStr($row['tempo_de_motor_ligado_hhmmss']),
+            'hodometro' => $this->clearStr($row['hodometro_km']),
+            'distancia' => $this->clearStr($row['distancia_km']),
+            'consumo' => $this->clearStr($row['consumolitros']),
+            'rendimento' => $this->clearStr($row['rendimentokml']),
+            'faixa_verde' => $this->clearStr($row['faixa_verde']),
+            'veiculo_desligado' => $this->clearStr($row['veiculo_desligado_hhmmss'])
         ]);
+    }
+    public function headingRow(): int
+    {
+        return 2;
+    }
+    public function clearStr($str) {
+        $str = str_replace('(UTC-3)', '', $str);
+        $str = preg_replace('/[^A-Za-z0-9\-.:, ]/', '-', $str);
+        return $str;
     }
 }

@@ -3,91 +3,67 @@
 @section('title', 'AdminLTE')
 
 @section('content_header')
-    <h1>Dashboard de trechos por placa</h1>
+    <h1 style="text-align:center">Gridview de consumo por placa</h1>
 @stop
-
 @section('content')
-<div class="table-responsive">
-    <table class="table ">
-        <thead>
-        <tr>
-            <th>Order ID</th>
-            <th>Item</th>
-            <th>Status</th>
-            <th>Popularity</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr>
-            <td><a href="pages/examples/invoice.html">OR9842</a></td>
-            <td>Call of Duty IV</td>
-            <td><span class="label label-success">Shipped</span></td>
-            <td>
-                <div class="sparkbar" data-color="#00a65a" data-height="20">90,80,90,-70,61,-83,63</div>
-            </td>
-        </tr>
-        <tr>
-            <td><a href="pages/examples/invoice.html">OR1848</a></td>
-            <td>Samsung Smart TV</td>
-            <td><span class="label label-warning">Pending</span></td>
-            <td>
-                <div class="sparkbar" data-color="#f39c12" data-height="20">90,80,-90,70,61,-83,68</div>
-            </td>
-        </tr>
-        <tr>
-            <td><a href="pages/examples/invoice.html">OR7429</a></td>
-            <td>iPhone 6 Plus</td>
-            <td><span class="label label-danger">Delivered</span></td>
-            <td>
-                <div class="sparkbar" data-color="#f56954" data-height="20">90,-80,90,70,-61,83,63</div>
-            </td>
-        </tr>
-        <tr>
-            <td><a href="pages/examples/invoice.html">OR7429</a></td>
-            <td>Samsung Smart TV</td>
-            <td><span class="label label-info">Processing</span></td>
-            <td>
-                <div class="sparkbar" data-color="#00c0ef" data-height="20">90,80,-90,70,-61,83,63</div>
-            </td>
-        </tr>
-        <tr>
-            <td><a href="pages/examples/invoice.html">OR1848</a></td>
-            <td>Samsung Smart TV</td>
-            <td><span class="label label-warning">Pending</span></td>
-            <td>
-                <div class="sparkbar" data-color="#f39c12" data-height="20">90,80,-90,70,61,-83,68</div>
-            </td>
-        </tr>
-        <tr>
-            <td><a href="pages/examples/invoice.html">OR7429</a></td>
-            <td>iPhone 6 Plus</td>
-            <td><span class="label label-danger">Delivered</span></td>
-            <td>
-                <div class="sparkbar" data-color="#f56954" data-height="20">90,-80,90,70,-61,83,63</div>
-            </td>
-        </tr>
-        <tr>
-            <td><a href="pages/examples/invoice.html">OR9842</a></td>
-            <td>Call of Duty IV</td>
-            <td><span class="label label-success">Shipped</span></td>
-            <td>
-                <div class="sparkbar" data-color="#00a65a" data-height="20">90,80,90,-70,61,-83,63</div>
-            </td>
-        </tr>
-        </tbody>
-    </table>
-</div>
-<div class="container"  style="width: 90%">
-    <div class="row">
-        <div class="col-lg-6">
-                <canvas id="myChart"></canvas>
-        </div>
-        <div class="col-lg-6">
-                <canvas id="myChart2"></canvas>
-        </div>
-        <div class="col-lg-12">
-                <canvas id="myChart3"></canvas>
-        </div>
+<div class="col-md-11" style="margin-left:50px">
+    <div class="table-responsive" style="max-height:450px">
+        <table class="data-table">
+            <thead class>
+            <tr style="background-color:darkgrey">
+                <th> NOME </th>
+                <th> PLACA </th>
+                <th> INICIO	</th>
+                <th> FIM HODOMETRO_INI </th>
+                <th> KM_Rodado </th>
+                <th> FAIXA_VERDE % </th>
+                <th> PARADA COM O MOTOR LIGADO (hh:mm:ss)</th>
+                <th> MOTOR_LIGADO </th>
+                <th> TEMPO_MOVIMENTO </th>
+                <th> CONSUMO TOTAL </th>
+                <th> Media_litros_KM </th>
+                <th> MEDIA ABAIXO DE 2 </th>
+                <th> MEDIA DE 2 A 2,9 </th>
+                <th> MEDIA A CIMA DE 2,9 </th>
+                <th> FAIXA VERDE A BAIXO DE 5% </th>
+                <th> FAIXA VERDE A BAIXO DE 2% </th>
+                <th> FAIXA VERDE A CIMA 5% </th>
+            </tr>
+            </thead>
+            <tbody>
+            @for($i=0;$i<count($gridconsumo);$i++)
+            <tr>
+                <td>{{$gridconsumo[$i]->motorista}}</td>
+                <td>{{$gridconsumo[$i]->veiculo}}</td>
+                <td>{{$gridconsumo[$i]->INICIO}}</td>
+                <td>{{$gridconsumo[$i]->FIM}}</td>
+                <td>{{$gridconsumo[$i]->hodometro}}</td>
+                <td>{{$gridconsumo[$i]->distancia}}</td>
+                <td>{{$gridconsumo[$i]->faixa_verde}}</td>
+                <td>{{$gridconsumo[$i]->parada_motor_ligado}}</td>
+                <td>{{$gridconsumo[$i]->tempo_movimento}}</td>
+                <td>{{$gridconsumo[$i]->consumo}}</td>
+                <td>{{$gridconsumo[$i]->rendimento}}</td>
+                <td>{{$gridconsumo[$i]->media_abaixo_2}}</td>
+                <td>{{$gridconsumo[$i]->media_de_2a29}}</td>
+                <td>{{$gridconsumo[$i]->media_acima_2}}</td>
+                <td>{{$gridconsumo[$i]->faixa_verde_abaixo5}}</td>
+                <td>{{$gridconsumo[$i]->faixa_verde_abaixo2}}</td>
+                <td>{{$gridconsumo[$i]->faixa_verde_acima5}}</td>
+            </tr>
+            @endfor
+            </tbody>
+        </table>
     </div>
 </div>
+
+        @section('js')
+        <script>
+            $(document).ready(function () {
+                $('.data-table').dataTable();
+            });
+        </script>
+    @stop
+
+
 @stop

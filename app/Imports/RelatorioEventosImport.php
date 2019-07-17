@@ -1,11 +1,12 @@
 <?php
 
 namespace App\Imports;
-
+ini_set('memory_limit', '-1');
 use App\Models\RelatorioEventos;
 use Maatwebsite\Excel\Concerns\ToModel;
+use Maatwebsite\Excel\Concerns\WithHeadingRow;
 
-class RelatorioEventosImport implements ToModel
+class RelatorioEventosImport implements ToModel, WithHeadingRow
 {
     /**
     * @param array $row
@@ -15,19 +16,28 @@ class RelatorioEventosImport implements ToModel
     public function model(array $row)
     {
         return new RelatorioEventos([
-            'data' => $row[0],
-            'hora' => $row[1],
-            'filial' => $row[2],
-            'veiculo' => $row[3],
-            'grupo_motorista' => $row[4],
-            'motorista' => $row[5],
-            'pedal_acionado' => $row[6],
-            'tipo_evento' => $row[7],
-            'descricao_evento' => $row[8],
-            'nome_cerca' => $row[9],
-            'velocidade'=> $row[10],
-            'hodometro' => $row[11],
-            'duracao' => $row[11]
+            'data' => $this->clearStr($row['data']),
+            'hora' => $this->clearStr($row['hora']),
+            'filial' => $this->clearStr($row['filial']),
+            'veiculo' => $this->clearStr($row['veiculo']),
+            'grupo_motorista' => $this->clearStr($row['grupo_motorista']),
+            'motorista' => $this->clearStr($row['motorista']),
+            'pedal_acionado' => $this->clearStr($row['pedal_acionado1']),
+            'tipo_evento' => $this->clearStr($row['tipo_evento']),
+            'descricao_evento' => $this->clearStr($row['descricao_evento']),
+            'nome_cerca' => $this->clearStr($row['nome_da_cerca']),
+            'velocidade'=> $this->clearStr($row['velocidade_kmh2']),
+            'hodometro' => $this->clearStr($row['hodometro_km']),
+            'duracao' => $this->clearStr($row['duracao'])
         ]);
+    }
+    public function headingRow(): int
+    {
+        return 2;
+    }
+    public function clearStr($str) {
+        $str = str_replace('(UTC-3)', '', $str);
+        $str = preg_replace('/[^A-Za-z0-9\-.:, ]/', '-', $str);
+        return $str;
     }
 }

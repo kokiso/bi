@@ -3,91 +3,58 @@
 @section('title', 'AdminLTE')
 
 @section('content_header')
-    <h1>Dashboard de Eventos</h1>
+    <h1 style="text-align:center">Gridview de consumo por placa</h1>
 @stop
-
 @section('content')
-<div class="table-responsive">
-    <table class="table ">
-        <thead>
-        <tr>
-            <th>Order ID</th>
-            <th>Item</th>
-            <th>Status</th>
-            <th>Popularity</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr>
-            <td><a href="pages/examples/invoice.html">OR9842</a></td>
-            <td>Call of Duty IV</td>
-            <td><span class="label label-success">Shipped</span></td>
-            <td>
-                <div class="sparkbar" data-color="#00a65a" data-height="20">90,80,90,-70,61,-83,63</div>
-            </td>
-        </tr>
-        <tr>
-            <td><a href="pages/examples/invoice.html">OR1848</a></td>
-            <td>Samsung Smart TV</td>
-            <td><span class="label label-warning">Pending</span></td>
-            <td>
-                <div class="sparkbar" data-color="#f39c12" data-height="20">90,80,-90,70,61,-83,68</div>
-            </td>
-        </tr>
-        <tr>
-            <td><a href="pages/examples/invoice.html">OR7429</a></td>
-            <td>iPhone 6 Plus</td>
-            <td><span class="label label-danger">Delivered</span></td>
-            <td>
-                <div class="sparkbar" data-color="#f56954" data-height="20">90,-80,90,70,-61,83,63</div>
-            </td>
-        </tr>
-        <tr>
-            <td><a href="pages/examples/invoice.html">OR7429</a></td>
-            <td>Samsung Smart TV</td>
-            <td><span class="label label-info">Processing</span></td>
-            <td>
-                <div class="sparkbar" data-color="#00c0ef" data-height="20">90,80,-90,70,-61,83,63</div>
-            </td>
-        </tr>
-        <tr>
-            <td><a href="pages/examples/invoice.html">OR1848</a></td>
-            <td>Samsung Smart TV</td>
-            <td><span class="label label-warning">Pending</span></td>
-            <td>
-                <div class="sparkbar" data-color="#f39c12" data-height="20">90,80,-90,70,61,-83,68</div>
-            </td>
-        </tr>
-        <tr>
-            <td><a href="pages/examples/invoice.html">OR7429</a></td>
-            <td>iPhone 6 Plus</td>
-            <td><span class="label label-danger">Delivered</span></td>
-            <td>
-                <div class="sparkbar" data-color="#f56954" data-height="20">90,-80,90,70,-61,83,63</div>
-            </td>
-        </tr>
-        <tr>
-            <td><a href="pages/examples/invoice.html">OR9842</a></td>
-            <td>Call of Duty IV</td>
-            <td><span class="label label-success">Shipped</span></td>
-            <td>
-                <div class="sparkbar" data-color="#00a65a" data-height="20">90,80,90,-70,61,-83,63</div>
-            </td>
-        </tr>
-        </tbody>
-    </table>
-</div>
-<div class="container"  style="width: 90%">
-    <div class="row">
-        <div class="col-lg-6">
-                <canvas id="myChart"></canvas>
-        </div>
-        <div class="col-lg-6">
-                <canvas id="myChart2"></canvas>
-        </div>
-        <div class="col-lg-12">
-                <canvas id="myChart3"></canvas>
-        </div>
+<div class="col-md-11" style="margin-left:50px">
+    <div class="table-responsive" style="max-height:500px">
+        <table class="data-table">
+            <thead class>
+            <tr style="background-color:darkgrey">
+                <th> DATA </th>
+                <th> HORA </th>
+                <th> FILIAL	</th>
+                <th> VEICULO </th>
+                <th> GRUPO MOTORISTA </th>
+                <th> MOTORISTA </th>
+                <th> PEDAL ACIONADO</th>
+                <th> TIPO EVENTO </th>
+                <th> DESCRICAO EVENTO </th>
+                <th> NOME CERCA </th>
+                <th> VELOCIDADE </th>
+                <th> HODOMETRO </th>
+                <th> DURACAO </th>
+            </tr>
+            </thead>
+            <tbody>
+            @for($i=0;$i<count($gridview);$i++)
+            <tr>
+                <td>{{$gridview[$i]->DATA}}</td>
+                <td>{{$gridview[$i]->HORA}}</td>
+                <td>{{$gridview[$i]->FILIAL}}</td>
+                <td>{{$gridview[$i]->VEICULO}}</td>
+                <td>{{$gridview[$i]->GRUPO_MOTORISTA}}</td>
+                <td>{{$gridview[$i]->MOTORISTA}}</td>
+                <td>{{$gridview[$i]->PEDAL_ACIONADO}}</td>
+                <td>{{$gridview[$i]->TIPO_EVENTO}}</td>
+                <td>{{$gridview[$i]->DESCRICAO_EVENTO}}</td>
+                <td>{{$gridview[$i]->NOME_CERCA}}</td>
+                <td>{{$gridview[$i]->VELOCIDADE}}</td>
+                <td>{{$gridview[$i]->HODOMETRO}}</td>
+                <td>{{$gridview[$i]->DURACAO}}</td>
+            </tr>
+            @endfor
+            </tbody>
+        </table>
     </div>
 </div>
+<div>
+        @section('js')
+        <script>
+            $(document).ready(function () {
+                $('.data-table').dataTable();
+            });
+        </script>
+    @stop
+
 @stop

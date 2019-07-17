@@ -21,7 +21,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'first_name', 'last_name', 'email', 'password',
+        'name', 'email', 'password',
     ];
 
     /**
@@ -35,21 +35,16 @@ class User extends Authenticatable
 
     public function getNameAttribute(): string
     {
-        $first_name = $this->first_name;
-        $last_name = $this->last_name;
+        $name = $this->name;
 
-        if (!$last_name) {
-            return $first_name;
-        }
-
-        return $first_name . ' ' . $last_name;
+        return $name;
     }
 
-    public function setNameAttribute($name): void
-    {
-        [$first_name, $last_name] = explode(' ', $name);
+    // public function setNameAttribute($name): void
+    // {
+    //     [$first_name, $last_name] = explode(' ', $name);
 
-        $this->first_name = $first_name;
-        $this->last_name = $last_name;
-    }
+    //     $this->first_name = $first_name;
+    //     $this->last_name = $last_name;
+    // }
 }

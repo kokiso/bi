@@ -45,7 +45,7 @@ return [
     |
     */
 
-    'skin' => 'blue',
+    'skin' => 'yellow-light',
 
     /*
     |--------------------------------------------------------------------------
@@ -110,19 +110,29 @@ return [
     'menu' => [
         //'Relatorios',
         [
-            'text'        => 'Telemetria',
+            'text'        => 'Menu',
             'url'         => 'admin/pages',
             'icon'        => 'database',
              'submenu' => [
                 [
-                    'text' => 'Eventos',
+                    'text' => 'Relatorio de eventos',
                     'url'  => '#',
                     'icon' => 'calendar-o',
                     'submenu' => [
                         [
-                            'text' => 'Gridview',
-                            'url'  => 'evento',
+                            'text' => 'Picos de Velocidade',
+                            'url'  => 'evento/velocidade',
+                            'icon' => 'exclamation-triangle',
+                        ],
+                        [
+                            'text' => 'Dashboard de Eventos',
+                            'url'  => 'evento/dashboard',
                             'icon' => 'dashboard',
+                        ],
+                        [
+                            'text' => 'Gridview de consumo',
+                            'url'  => 'evento',
+                            'icon' => 'table',
                         ],
                         [
                             'text' => 'Importar dados',
@@ -132,19 +142,53 @@ return [
                     ]
                 ],
                 [
-                    'text' => 'Placas',
+                    'text' => 'Relatorios de consumo',
                     'url'  => '#',
-                    'icon' => 'car',
+                    'icon' => 'road',
                     'submenu' => [
                         [
-                            'text' => 'Gridview',
+                            'text' => 'Gridview de consumo',
                             'url'  => 'placa',
+                            'icon' => 'table',
+                        ],
+                        [
+                            'text' => 'Ranking',
+                            'url'  => 'placa/ranking',
+                            'icon' => 'line-chart',
+                        ],
+
+                        [
+                            'text' => 'Dashboard',
+                            'url'  => 'placa/dashboard',
                             'icon' => 'dashboard',
                         ],
                         [
                             'text' => 'Importar dados',
                             'url'  => 'placa/importacao',
                             'icon' => 'upload',
+                        ],
+                    ]
+                ],
+                [
+                    'text' => 'Cadastros Auxiliares',
+                    'url'  => '#',
+                    'icon' => 'plus-square-o',
+                    'submenu' => [
+                        [
+                            'text' => 'Formulario de meta media',
+                            'url'  => 'formulario',
+                            'icon' => 'check-square-o',
+                        ],
+                        [
+                            'text' => 'Importacao motorista',
+                            'url'  => 'bc/motorista',
+                            'icon' => 'id-card',
+                        ],
+
+                        [
+                            'text' => 'Importacao Frotas',
+                            'url'  => 'bc/frota',
+                            'icon' => 'car',
                         ],
                     ]
                 ],
@@ -233,7 +277,7 @@ return [
 
     'plugins' => [
         'datatables' => true,
-        'select2'    => false,
+        'select2'    => true,
         'chartjs'    => true,
     ],
 ];
