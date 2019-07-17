@@ -95,6 +95,8 @@ class PlacaController extends Controller
     {
         Excel::import(new RelatorioTrechoImport,request()->file('filePlaca'));
 
+        DB::table('relatorio_trechos')->where('faixa_verde',0)->delete()
+
         return redirect('/placa');
     }
 

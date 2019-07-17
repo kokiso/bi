@@ -17,7 +17,7 @@ class RelatorioTrechoImport implements ToModel, WithHeadingRow
     {
         return new RelatorioTrecho([
             //
-            'motorista' => $this->clearStr($row['motorista']),
+            'motorista' => str_replace('-','',$this->clearStr($row['motorista'])),
             'veiculo' => $this->clearStr($row['veiculo']),
             'motor_ligado' => $this->clearStr($row['motor_ligado_hhmmss']),
             'parada_motor_ligado' => $this->clearStr($row['parada_com_o_motor_ligado_hhmmss']),
@@ -34,8 +34,9 @@ class RelatorioTrechoImport implements ToModel, WithHeadingRow
     {
         return 2;
     }
-    public function clearStr($str) {
+    public function clearStr($str) {  
         $str = str_replace('(UTC-3)', '', $str);
+        $str = str_replace('RTE', '', $str);
         $str = preg_replace('/[^A-Za-z0-9\-.:, ]/', '-', $str);
         return $str;
     }

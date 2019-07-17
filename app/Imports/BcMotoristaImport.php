@@ -13,8 +13,7 @@ class BcMotoristaImport implements ToModel
     * @return \Illuminate\Database\Eloquent\Model|null
     */
     public function model(array $row)
-    {
-
+    {   
         return new bcMotorista([
             'nome' => $row[0],
             'matricula' => $row[1],

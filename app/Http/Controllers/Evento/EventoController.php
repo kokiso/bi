@@ -131,6 +131,19 @@ class EventoController extends Controller
     {
         Excel::import(new RelatorioEventosImport,request()->file('fileEvento'));
 
+        DB::table('relatorio_eventos')
+        ->where('velocidade','<',-60)
+        ->delete();
+
+        DB::table('relatorio_eventos')
+        ->where('velocidade','>',0)
+        ->whereBetween('velocidade', [94, 131])
+        ->delete();
+
+        DB::table('relatorio_eventos')
+        ->where('tipo_evento','like','PR-%')
+        ->delete();
+
         return redirect('/evento');
     }
 }

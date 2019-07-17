@@ -16,17 +16,17 @@ class CreateRelatorioEventosTable extends Migration
         Schema::create('relatorio_eventos', function (Blueprint $table) {
             $table->increments('id');
             $table->string('data')->nullable();
-            $table->string('hora',64)->nullable();
+            $table->string('hora')->nullable();
             $table->string('filial')->nullable();
-            $table->string('veiculo',12)->nullable();
-            $table->string('grupo_motorista',64)->nullable();
-            $table->string('motorista',191)->nullable();
+            $table->string('veiculo')->nullable();
+            $table->string('grupo_motorista')->nullable();
+            $table->string('motorista')->nullable();
             $table->string('pedal_acionado')->nullable();
             $table->string('tipo_evento')->nullable();
             $table->string('descricao_evento')->nullable();
             $table->string('nome_cerca')->nullable();
-            $table->string('velocidade',4)->nullable();
-            $table->string('hodometro',8)->nullable();
+            $table->string('velocidade')->nullable();
+            $table->string('hodometro')->nullable();
             $table->string('duracao')->nullable();
             $table->timestamps();
         });
