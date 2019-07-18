@@ -19,7 +19,6 @@
                 <th> FAIXA_VERDE % </th>
                 <th> PARADA COM O MOTOR LIGADO (hh:mm:ss)</th>
                 <th> MOTOR_LIGADO </th>
-                <th> TEMPO_MOVIMENTO </th>
                 <th> CONSUMO TOTAL </th>
                 <th> Media_litros_KM </th>
                 <th> MEDIA ABAIXO DE 2 </th>
@@ -41,7 +40,6 @@
                 <td>{{$gridconsumo[$i]->distancia}}</td>
                 <td>{{$gridconsumo[$i]->faixa_verde}}</td>
                 <td>{{$gridconsumo[$i]->parada_motor_ligado}}</td>
-                <td>{{$gridconsumo[$i]->tempo_movimento}}</td>
                 <td>{{$gridconsumo[$i]->consumo}}</td>
                 <td>{{$gridconsumo[$i]->rendimento}}</td>
                 <td>{{$gridconsumo[$i]->media_abaixo_2}}</td>
@@ -60,7 +58,9 @@
         @section('js')
         <script>
             $(document).ready(function () {
-                $('.data-table').dataTable();
+                $('.data-table').dataTable({
+                    "deferRender": true
+                });
             });
         </script>
     @stop

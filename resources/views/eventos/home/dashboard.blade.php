@@ -6,6 +6,9 @@
     for($i=0; $i<8; $i++){
         $motoristaChart[] = substr($tempoParadoChart[$i]->motorista,0,10);
         $infracaomotChart[] = $tempoParadoChart[$i]->tempo_parado;
+        if($i == 7){
+        break;
+     }
     }
 ?>
 @section('content_header')

@@ -33,22 +33,27 @@ class EventoController extends Controller
     public function velocidadeview(){
         $noSeco = DB::table('relatorio_eventos')
         ->select(DB::RAW('count(*) AS count'))
-        ->where('tipo_evento','like',"'%NO%SECO%'")
+        ->where('descricao_evento','like',"%SECO%")
         ->get();
 
         $noMolhado = DB::table('relatorio_eventos')
         ->select(DB::RAW(' count(*)AS count'))
-        ->where('tipo_evento','like',"'%infraochuva%'")
+        ->where('descricao_evento','like',"%chuva%")
         ->get();
 
         $matriz = DB::table('relatorio_eventos')
-        ->select(DB::RAW('count(*)AS count'))
-        ->where('filial','=',"''")
+        ->select(DB::RAW('count(nome_cerca)AS count'))
+        ->where('filial','=',"")
         ->get();
 
-        $base = DB::table('relatorio_eventos')
-        ->select(DB::RAW('nome_cerca,count(tipo_evento) AS infracao'))
-        ->groupBy('nome_cerca')
+        $matrizTotal = DB::table('relatorio_eventos')
+        ->select(DB::RAW('count(nome_cerca)AS count'))
+        ->get();
+
+        $base = DB::table('relatorio_eventos as a')
+        ->select(DB::RAW("coalesce(b.base_vinculo,'-----') as nome_cerca,count(a.tipo_evento) AS infracao"))
+        ->leftJoin('bcMotorista AS b',DB::RAW("'%'+b.nome+'%'"),'like',DB::RAW("'%'+a.motorista+'%'"))
+        ->groupBy('b.base_vinculo')
         ->orderBy('infracao','desc')
         ->get();
 
@@ -57,7 +62,7 @@ class EventoController extends Controller
         ->get();
 
         $motorista = DB::table('relatorio_eventos')
-        ->select(DB::RAW(' motorista,count(tipo_evento)
+        ->select(DB::RAW('motorista,count(tipo_evento)
         AS infracao'))
         ->where('motorista','<>',"''")
         ->groupBy('motorista')
@@ -73,6 +78,7 @@ class EventoController extends Controller
             'noSeco'=> $noSeco,
             'noMolhado'=> $noMolhado,
             'matriz'=> $matriz,
+            'matrizTotal'=> $matrizTotal,
             'base'=> json_decode($base),
             'baseTotal'=> $baseTotal,
             'motorista'=> json_decode($motorista),
@@ -82,30 +88,30 @@ class EventoController extends Controller
     public function dashboardview(){
         $totTempoParado = DB::table('relatorio_eventos')
         ->select(DB::RAW(' count(descricao_evento) as count'))
-        ->where('descricao_evento','like',"'%tempo%'")
+        ->where('descricao_evento','like',DB::RAW("'%tempo%'"))
         ->get();
         $totMarcha = DB::table('relatorio_eventos')
         ->select(DB::RAW(' count(descricao_evento) as count'))
-        ->where('descricao_evento','like',"'%marcha%'")
+        ->where('descricao_evento','like',DB::RAW("'%marcha%'"))
         ->get();
         $totPreVelSeco = DB::table('relatorio_eventos')
         ->select(DB::RAW(' count(descricao_evento) as count'))
-        ->where('descricao_evento','like',"'%pr%seco%'")
+        ->where('descricao_evento','like',DB::RAW("'%pr%seco%'"))
         ->get();
         $totVelSeco = DB::table('relatorio_eventos')
         ->select(DB::RAW(' count(descricao_evento) as count'))
-        ->where('descricao_evento','like',"'%rodo%seco%'")
+        ->where('descricao_evento','like',DB::RAW("'%rodo%seco%'"))
         ->get();
         $totRotacao = DB::table('relatorio_eventos')
         ->select(DB::RAW(' count(descricao_evento) as count'))
-        ->where('descricao_evento','like',"'%rot%'")
+        ->where('descricao_evento','like',DB::RAW("'%rot%'"))
         ->get();
         $totGeral = DB::table('relatorio_eventos')
         ->select(DB::RAW(' count(descricao_evento) as count'))
         ->get();
         $tempoParadoChart = DB::table('relatorio_eventos')
         ->select(DB::RAW('motorista,count(descricao_evento) as tempo_parado'))
-        ->WHERE('descricao_evento','like','%tempo%')
+        ->WHERE('descricao_evento','like',DB::RAW("'%tempo%'"))
         ->groupBy('motorista')
         ->orderBy('motorista','desc')
         ->get();

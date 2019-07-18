@@ -52,7 +52,10 @@
         @section('js')
         <script>
             $(document).ready(function () {
-                $('.data-table').dataTable();
+                $('.data-table').dataTable({
+                    "deferRender": true,
+                    "deferLoading": [ 50, 100 ],
+                });
             });
         </script>
     @stop

@@ -7,19 +7,24 @@
 @stop
 <?php
 for($k=0; $k < count($consumo); $k++){
-    $placa[] = $consumo[$k]->veiculo;
+    $placa[] = $consumo[$k]->frota;
     $kmtotal[] = number_format((float)($consumo[$k]->media_km_litros/$consumo[$k]->km_rodado),2,'.','');
+    if($k == 7){
+        break;
+     }
 }
 ?>
 @section('content')
 <div class="row">
     <div class="col-md-12">
-        <div class="table-responsive" style="max-height:250px">
+        <div class="table-responsive bordered" style="max-height:250px;background-color:white;border:0.5px">
             <table class="data-table">
                 <thead style="background-color:green">
                 <tr>
-                    <th>Placa</th>
+                    <th>Frota</th>
                     <th>Nome</th>
+                    <th>Modelo</th>
+                    <th>Ano do modelo</th>
                     <th>Soma - KM_Rodado</th>
                     <th>Média - Media_litros_KM</th>
                 </tr>
@@ -27,8 +32,10 @@ for($k=0; $k < count($consumo); $k++){
                 <tbody>
                 @for($i=0; $i<count($consumo); $i++)
                 <tr>
-                    <td>{{$consumo[$i]->veiculo}}</td>
+                    <td>{{$consumo[$i]->frota}}</td>
                     <td>{{$consumo[$i]->motorista}}</td>
+                    <td>{{$consumo[$i]->modelo}}</td>
+                    <td>{{$consumo[$i]->ano_modelo}}</td>
                     <td>{{(float)$consumo[$i]->km_rodado}}</td>
                     <td>{{number_format((float)($consumo[$i]->media_km_litros/$consumo[$i]->km_rodado),2,'.','')}}</td>
                 </tr>
@@ -63,6 +70,12 @@ for($k=0; $k < count($consumo); $k++){
             <canvas id="consumoChart"style="border-style:solid">></canvas>
     </div>
 </div>
+<style>
+    /* td{
+        text-align:center;
+        max-width: 100%;
+    } */
+</style>
 <script>
     $(function () {
     let placa = <?php echo json_encode($placa)?>;
@@ -110,7 +123,13 @@ for($k=0; $k < count($consumo); $k++){
 @section('js')
 <script>
     $(document).ready(function () {
-        $('.data-table').dataTable();
+        $('.data-table').dataTable(
+        {   "pageLength": 5,
+            "columnDefs": [
+                { "width": "15%", "targets": 0 }
+            ]
+        }
+    );
     });
 </script>
 @stop

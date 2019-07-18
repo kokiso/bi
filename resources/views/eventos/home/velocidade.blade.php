@@ -10,13 +10,24 @@
     <h1 style="text-align:center">Dashboard de Eventos</h1>
 @stop
 <?php
+$somaVin = 0;
 for($i=0; $i<count($motorista); $i++){
+
      $motoristaChart[] = substr($motorista[$i]->motorista,0,10);
      $infracaomotChart[] = $motorista[$i]->infracao;
+     if($i == 7){
+        break;
+     }
+
 }
 for($i=0; $i<count($base); $i++){
-     $basechart[]=substr($base[$i]->nome_cerca,0,10);
+
+     $basechart[]=$base[$i]->nome_cerca;
      $ifnracaoBaseChart[] = $base[$i]->infracao;
+     if($i == 7){
+        break;
+     }
+
 }
 ?>
 @section('content')
@@ -58,7 +69,11 @@ for($i=0; $i<count($base); $i++){
                     <tbody>
                     <tr>
                         <td>RODONAVES MATRIZ</td>
-                    <td style="background-color:red">{{$matriz[0]->count}}</td>
+                        <td style="background-color:red">{{$matriz[0]->count}}</td>
+                    </tr>
+                    <tr>
+                        <td>Total Geral</td>
+                        <td style="background-color:red">{{$matrizTotal[0]->count}}</td>
                     </tr>
                     </tbody>
                 </table>
@@ -88,6 +103,7 @@ for($i=0; $i<count($base); $i++){
                     <td>{{$base[$i]->infracao}}</td>
                 </tr>
                 @endfor
+
                 </tbody>
             </table>
         </div>

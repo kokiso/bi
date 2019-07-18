@@ -9,10 +9,16 @@
 for($i=0; $i<count($rankingPorPlaca); $i++){
      $veiculoJson[] = $rankingPorPlaca[$i]->veiculo;
      $media_consumoPlaca[] = $rankingPorPlaca[$i]->distancia/$rankingPorPlaca[$i]->consumo;
+     if($i == 7){
+        break;
+     }
 }
 for($i=0; $i<count($rankingPorMotorista); $i++){
      $motoristaJson[]=substr($rankingPorMotorista[$i]->motorista, 0,10);
      $media_consumoMotorista[] = $rankingPorMotorista[$i]->distancia/$rankingPorMotorista[$i]->consumo;
+     if($i == 7){
+        break;
+     }
 }
 ?>
 @section('content')
@@ -20,7 +26,7 @@ for($i=0; $i<count($rankingPorMotorista); $i++){
     <h3 style="text-align:center">Ranking Motoristas Infratores Consumo</h3>
     <div class="col-md-6">
         <div class="table-responsive" style="max-height:220px">
-            <table class="table">
+            <table class="data-table">
                 <thead>
                 <tr>
                     <th>Motorista</th>
@@ -46,8 +52,8 @@ for($i=0; $i<count($rankingPorMotorista); $i++){
 <div class="row">
     <h3 style="text-align:center">Ranking Motoristas Infratores Consumo</h3>
     <div class="col-md-6">
-            <div class="table-responsive" style="max-height:220px">
-            <table class="table ">
+            <div class="table-responsive table-bordered" style="max-height:220px">
+            <table class="data-table2 ">
                 <thead>
                 <tr>
                     <th>Motorista</th>
@@ -101,15 +107,6 @@ for($i=0; $i<count($rankingPorMotorista); $i++){
                             getRandomColor(),
                             getRandomColor(),
                             getRandomColor(),
-                            getRandomColor(),
-                            getRandomColor(),
-                            getRandomColor(),
-                            getRandomColor(),
-                            getRandomColor(),
-                            getRandomColor(),
-                            getRandomColor(),
-                            getRandomColor(),
-                            getRandomColor(),
                             getRandomColor()]
                         }]
                 }
@@ -123,15 +120,6 @@ for($i=0; $i<count($rankingPorMotorista); $i++){
                         label:'Consumo por placa',
                         data:media_consumoPlaca,
                           pointBackgroundColor:[getRandomColor(),
-                        getRandomColor(),
-                        getRandomColor(),
-                        getRandomColor(),
-                        getRandomColor(),
-                        getRandomColor(),
-                        getRandomColor(),
-                        getRandomColor(),
-                        getRandomColor(),
-                        getRandomColor(),
                         getRandomColor(),
                         getRandomColor(),
                         getRandomColor(),
@@ -153,4 +141,26 @@ for($i=0; $i<count($rankingPorMotorista); $i++){
             return color;
         }
 </script>
+@section('js')
+<script>
+    $(document).ready(function () {
+        $('.data-table').dataTable(
+        {   "pageLength": 5,
+            "columnDefs": [
+                { "width": "70%", "targets": 0 }
+            ]
+        }
+    );
+    });
+    $(document).ready(function () {
+        $('.data-table2').dataTable(
+        {   "pageLength": 5,
+            "columnDefs": [
+                { "width": "70%", "targets": 0 }
+            ]
+        }
+    );
+    });
+</script>
+@stop
 @stop
