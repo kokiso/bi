@@ -81,7 +81,7 @@
                     <td>{{$consumoMedia[$i]->abaixo_2kml}}</td>
                     <td>{{$consumoMedia[$i]->entre_2kml_29kml}}</td>
                     <td>{{$consumoMedia[$i]->acima_29kml}}</td>
-                    <td>100</td>
+                    <td>90</td>
                     <td>{{$consumoMedia[$i]->realizado}}</td>
                 </tr>
                 <tr style="font-size:12px">
@@ -165,4 +165,3 @@
                 </table>
             </div>
         </div>
-
