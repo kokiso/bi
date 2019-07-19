@@ -32,7 +32,7 @@ $this->group(['middleware'=>'auth'],function(){
     $this->post('update', 'MetaMediaController@update')->name('update');
 });
 
-Route::get('/','Site\SiteController@index')->name('home');
+Route::get('/','Admin\AdminController@index')->name('home');
 
 Auth::routes();
 

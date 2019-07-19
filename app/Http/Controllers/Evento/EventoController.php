@@ -94,10 +94,6 @@ class EventoController extends Controller
         ->select(DB::RAW(' count(descricao_evento) as count'))
         ->where('descricao_evento','like',DB::RAW("'%marcha%'"))
         ->get();
-        $totPreVelSeco = DB::table('relatorio_eventos')
-        ->select(DB::RAW(' count(descricao_evento) as count'))
-        ->where('descricao_evento','like',DB::RAW("'%pr%seco%'"))
-        ->get();
         $totVelSeco = DB::table('relatorio_eventos')
         ->select(DB::RAW(' count(descricao_evento) as count'))
         ->where('descricao_evento','like',DB::RAW("'%rodo%seco%'"))
@@ -116,15 +112,26 @@ class EventoController extends Controller
         ->orderBy('motorista','desc')
         ->get();
 
+        $motoristaInfracao= DB::select("
+        select case when motorista = '' then 'SEM MOTORISTA' ELSE motorista END as motorista
+        ,count(descricao_evento) as contador
+        ,(select count(descricao_evento) FROM relatorio_eventos WHERE motorista = a.motorista AND descricao_evento like '%tempo%') AS tempo_parado
+        ,(select count(descricao_evento) FROM relatorio_eventos WHERE motorista = a.motorista AND descricao_evento like '%marcha%') as marcha_lenta
+        ,(select count(descricao_evento) FROM relatorio_eventos WHERE motorista = a.motorista AND descricao_evento like '%rodo%seco%') AS rod_seco
+        ,(select count(descricao_evento) FROM relatorio_eventos WHERE motorista = a.motorista AND descricao_evento like '%rot%') AS rotacao
+        from relatorio_eventos a
+        GROUP BY motorista
+        ORDER BY contador DESC
+        ");
 
         return view ('eventos.home.dashboard',[
             'totTempoParado' =>$totTempoParado,
             'totMarcha' =>$totMarcha,
-            'totPreVelSeco' =>$totPreVelSeco,
             'totVelSeco' =>$totVelSeco,
             'totRotacao' =>$totRotacao,
             'totGeral'=>$totGeral,
-            'tempoParadoChart' =>json_decode($tempoParadoChart)
+            'tempoParadoChart' =>json_decode($tempoParadoChart),
+            'motoristaInfracao' => $motoristaInfracao
         ]);
     }
 

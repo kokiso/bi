@@ -61,9 +61,19 @@ class PlacaController extends Controller
         ->select(DB::raw('sum(cast(distancia as float)) as  total_km, sum(cast(consumo as float)) total_km_litros'))
         ->get();
 
+        $frotasSelect = DB::table('bcFrota')
+        ->select('frota')
+        ->distinct()
+        ->get();
+
+        $frotaArray = json_decode(json_encode($frotasSelect), true);
+        foreach ($frotaArray as $item){
+            $frotas = $item['frota'];
+        }
         return view ('placas.home.dashboard',[
             'consumo'=>json_decode($consumo),
-            'totalConsumos'=>json_decode($totalConsumos)
+            'totalConsumos'=>json_decode($totalConsumos),
+            'frotas' => json_decode(json_encode($frotaArray), true)
         ]);
     }
     public function rankingview(){

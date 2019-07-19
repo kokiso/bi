@@ -99,15 +99,14 @@ for($i=0; $i<count($rankingPorMotorista); $i++){
                     datasets:[{
                         label:'Consumo por motorista',
                         data:media_consumoMotorista,
-                        pointBackgroundColor:[getRandomColor(),
-                            getRandomColor(),
-                            getRandomColor(),
-                            getRandomColor(),
-                            getRandomColor(),
-                            getRandomColor(),
-                            getRandomColor(),
-                            getRandomColor(),
-                            getRandomColor()]
+                        pointBackgroundColor:['lightblue',
+                        'lightgreen',
+                        'yellow',
+                        'gray',
+                        'orange',
+                        'purple',
+                        'red',
+                        'pink']
                         }]
                 }
             });
@@ -119,27 +118,19 @@ for($i=0; $i<count($rankingPorMotorista); $i++){
                     datasets:[{
                         label:'Consumo por placa',
                         data:media_consumoPlaca,
-                          pointBackgroundColor:[getRandomColor(),
-                        getRandomColor(),
-                        getRandomColor(),
-                        getRandomColor(),
-                        getRandomColor(),
-                        getRandomColor(),
-                        getRandomColor(),
-                        getRandomColor(),
-                        getRandomColor()]
+                          pointBackgroundColor:['lightblue',
+                        'lightgreen',
+                        'yellow',
+                        'gray',
+                        'orange',
+                        'purple',
+                        'red',
+                        'pink']
                     }]
                 }
             });
         });
-        function getRandomColor() {
-            var letters = '0123456789ABCDEF'.split('');
-            var color = '#';
-            for (var i = 0; i < 6; i++ ) {
-                color += letters[Math.floor(Math.random() * 16)];
-            }
-            return color;
-        }
+
 </script>
 @section('js')
 <script>

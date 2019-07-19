@@ -16,10 +16,11 @@ for($k=0; $k < count($consumo); $k++){
 ?>
 @section('content')
 <div class="row">
+    @include('placas.home.external')
     <div class="col-md-12">
         <div class="table-responsive bordered" style="max-height:250px;background-color:white;border:0.5px">
             <table class="data-table">
-                <thead style="background-color:green">
+                <thead style="background-color:lightblue">
                 <tr>
                     <th>Frota</th>
                     <th>Nome</th>
@@ -66,7 +67,7 @@ for($k=0; $k < count($consumo); $k++){
             </table>
         </div>
     </div>
-    <div class="col-md-6">
+    <div class="col-md-7">
             <canvas id="consumoChart"style="border-style:solid">></canvas>
     </div>
 </div>
@@ -87,38 +88,21 @@ for($k=0; $k < count($consumo); $k++){
                 data:{
                     labels:placa,
                     datasets:[{
-                        label:'Kilometros Rodados',
+                        label:'Frota x Kilometros Rodados',
                         data:kmtotal,
-                          pointBackgroundColor:[getRandomColor(),
-                        getRandomColor(),
-                        getRandomColor(),
-                        getRandomColor(),
-                        getRandomColor(),
-                        getRandomColor(),
-                        getRandomColor(),
-                        getRandomColor(),
-                        getRandomColor(),
-                        getRandomColor(),
-                        getRandomColor(),
-                        getRandomColor(),
-                        getRandomColor(),
-                        getRandomColor(),
-                        getRandomColor(),
-                        getRandomColor(),
-                        getRandomColor(),
-                        getRandomColor()]
+                          pointBackgroundColor:['lightblue',
+                        'lightgreen',
+                        'yellow',
+                        'gray',
+                        'orange',
+                        'purple',
+                        'red',
+                        'pink']
                     }]
                 }
             });
         });
-    function getRandomColor() {
-            var letters = '0123456789ABCDEF'.split('');
-            var color = '#';
-            for (var i = 0; i < 6; i++ ) {
-                color += letters[Math.floor(Math.random() * 16)];
-            }
-            return color;
-        }
+
 </script>
 @section('js')
 <script>

@@ -22,7 +22,7 @@ for($i=0; $i<count($motorista); $i++){
 }
 for($i=0; $i<count($base); $i++){
 
-     $basechart[]=$base[$i]->nome_cerca;
+     $basechart[]=substr($base[$i]->nome_cerca,3,18);
      $ifnracaoBaseChart[] = $base[$i]->infracao;
      if($i == 7){
         break;
@@ -164,85 +164,82 @@ $(function () {
 
     var myChart = new Chart(ctx3, {
         type: 'line',
+        options: {
+                scales: {
+                    xAxes: [{
+                        ticks: {
+                            fontSize: 8
+                        }
+                        }]
+                    }
+                },
         data:{
             labels:motoristaChart,
             datasets:[{
                 label:'Motorista x Infracao',
                 data:infracaomotChart,
-                  pointBackgroundColor:[getRandomColor(),
-                getRandomColor(),
-                getRandomColor(),
-                getRandomColor(),
-                getRandomColor(),
-                getRandomColor(),
-                getRandomColor(),
-                getRandomColor(),
-                getRandomColor(),
-                getRandomColor(),
-                getRandomColor(),
-                getRandomColor(),
-                getRandomColor(),
-                getRandomColor(),
-                getRandomColor(),
-                getRandomColor(),
-                getRandomColor(),
-                getRandomColor()]
+                  pointBackgroundColor:['lightblue',
+                        'lightgreen',
+                        'yellow',
+                        'gray',
+                        'orange',
+                        'purple',
+                        'red',
+                        'pink']
             }]
         }
     });
     var myChart = new Chart(ctx2, {
         type: 'bar',
+        options: {
+                scales: {
+                    xAxes: [{
+                        ticks: {
+                            fontSize: 10
+                        }
+                        }]
+                    }
+                },
         data:{
             labels:motoristaChart,
             datasets:[{
                 label:'Analitico Motorista',
                 data:infracaomotChart,
-                backgroundColor:[getRandomColor(),
-                getRandomColor(),
-                getRandomColor(),
-                getRandomColor(),
-                getRandomColor(),
-                getRandomColor(),
-                getRandomColor(),
-                getRandomColor(),
-                getRandomColor(),
-                getRandomColor(),
-                getRandomColor(),
-                getRandomColor(),
-                getRandomColor(),
-                getRandomColor(),
-                getRandomColor(),
-                getRandomColor(),
-                getRandomColor(),
-                getRandomColor()]
+                backgroundColor:['lightblue',
+                        'lightgreen',
+                        'yellow',
+                        'gray',
+                        'orange',
+                        'purple',
+                        'red',
+                        'pink']
             }]
         }
     });
     var myChart = new Chart(ctx1, {
         type: 'bar',
+        options: {
+                scales: {
+                    xAxes: [{
+                        ticks: {
+                            fontSize: 10
+                        }
+                        }]
+                    }
+                },
         data:{
             labels:basechart,
             datasets:[{
                 label:'Base Vinculo',
                 data:ifnracaoBaseChart,
-                backgroundColor:[getRandomColor(),
-                getRandomColor(),
-                getRandomColor(),
-                getRandomColor(),
-                getRandomColor(),
-                getRandomColor(),
-                getRandomColor(),
-                getRandomColor(),
-                getRandomColor(),
-                getRandomColor(),
-                getRandomColor(),
-                getRandomColor(),
-                getRandomColor(),
-                getRandomColor(),
-                getRandomColor(),
-                getRandomColor(),
-                getRandomColor(),
-                getRandomColor()]
+                backgroundColor:['lightblue',
+                        'lightgreen',
+                        'yellow',
+                        'gray',
+                        'orange',
+                        'purple',
+                        'red',
+                        'pink']
             }]
         }
     });
@@ -258,13 +255,5 @@ $(function () {
     // });
 });
 
- function getRandomColor() {
-    var letters = '0123456789ABCDEF'.split('');
-    var color = '#';
-    for (var i = 0; i < 6; i++ ) {
-        color += letters[Math.floor(Math.random() * 16)];
-    }
-    return color;
-}
 </script>
 @stop
