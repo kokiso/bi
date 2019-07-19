@@ -61,9 +61,10 @@ class PlacaController extends Controller
         ->select(DB::raw('sum(cast(distancia as float)) as  total_km, sum(cast(consumo as float)) total_km_litros'))
         ->get();
 
-        $frotasSelect = DB::table('bcFrota')
-        ->select('frota')
-        ->distinct()
+        $frotasSelect = DB::table('bcFrota as a')
+        ->select('a.frota')
+        ->rightJoin('relatorio_trechos as b','a.placa_atual','=','b.veiculo')
+        ->groupBy('a.frota')
         ->get();
 
         $frotaArray = json_decode(json_encode($frotasSelect), true);

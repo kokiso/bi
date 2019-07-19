@@ -107,8 +107,25 @@ for($k=0; $k < count($consumo); $k++){
 @section('js')
 <script>
     $(document).ready(function () {
-        $('.data-table').dataTable(
+
+        $('.data-table thead tr').clone(true).appendTo( '.data-table thead' );
+        $('.data-table thead tr:eq(1) th').each( function (i) {
+            var title = $(this).text();
+            $(this).html( '<input type="text"/>' );
+     
+            $( 'input', this ).on( 'keyup change', function () {
+                if ( table.column(i).search() !== this.value ) {
+                    table
+                        .column(i)
+                        .search( this.value )
+                        .draw();
+                }
+            } );
+        } );
+        let table = $('.data-table').DataTable(
         {   "pageLength": 5,
+            "orderCellsTop": true,
+            "fixedHeader": true,
             "columnDefs": [
                 { "width": "15%", "targets": 0 }
             ]
