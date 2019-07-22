@@ -30,6 +30,9 @@ $this->group(['middleware'=>'auth'],function(){
     //Meta media
     $this->get('formulario', 'MetaMediaController@formulario')->name('formulario');
     $this->post('update', 'MetaMediaController@update')->name('update');
+
+    //tela external
+    $this->post('placa/external', 'Placa\PlacaController@externalView')->name('external');
 });
 
 Route::get('/','Admin\AdminController@index')->name('home');

@@ -8,14 +8,14 @@
 <?php
 for($i=0; $i<count($rankingPorPlaca); $i++){
      $veiculoJson[] = $rankingPorPlaca[$i]->veiculo;
-     $media_consumoPlaca[] = $rankingPorPlaca[$i]->distancia/$rankingPorPlaca[$i]->consumo;
+     $media_consumoPlaca[] = $rankingPorPlaca[$i]->media;
      if($i == 7){
         break;
      }
 }
 for($i=0; $i<count($rankingPorMotorista); $i++){
      $motoristaJson[]=substr($rankingPorMotorista[$i]->motorista, 0,10);
-     $media_consumoMotorista[] = $rankingPorMotorista[$i]->distancia/$rankingPorMotorista[$i]->consumo;
+     $media_consumoMotorista[] = $rankingPorMotorista[$i]->media;
      if($i == 7){
         break;
      }
@@ -37,7 +37,7 @@ for($i=0; $i<count($rankingPorMotorista); $i++){
                 @for($i=0; $i<count($rankingPorMotorista); $i++)
                 <tr>
                     <td>{{$rankingPorMotorista[$i]->motorista}}</td>
-                    <td>{{number_format((float)($rankingPorMotorista[$i]->distancia/$rankingPorMotorista[$i]->consumo),2,'.','')}}</td>
+                    <td>{{number_format((float)($rankingPorMotorista[$i]->media),2,'.','')}}</td>
                 </tr>
                 @endfor
                 </tbody>
@@ -64,7 +64,7 @@ for($i=0; $i<count($rankingPorMotorista); $i++){
                 @for($i=0; $i<count($rankingPorPlaca); $i++)
                 <tr>
                     <td>{{$rankingPorPlaca[$i]->veiculo}}</td>
-                    <td>{{number_format((float)($rankingPorPlaca[$i]->distancia/$rankingPorPlaca[$i]->consumo),2,'.','')}}</td>
+                    <td>{{number_format((float)($rankingPorPlaca[$i]->media),2,'.','')}}</td>
                 </tr>
                 @endfor
                 </tbody>

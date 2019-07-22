@@ -8,7 +8,7 @@
 <?php
 for($k=0; $k < count($consumo); $k++){
     $placa[] = $consumo[$k]->frota;
-    $kmtotal[] = number_format((float)($consumo[$k]->media_km_litros/$consumo[$k]->km_rodado),2,'.','');
+    $kmtotal[] = number_format((float)($consumo[$k]->mediaTot),2,'.','');
     if($k == 7){
         break;
      }
@@ -38,7 +38,7 @@ for($k=0; $k < count($consumo); $k++){
                     <td>{{$consumo[$i]->modelo}}</td>
                     <td>{{$consumo[$i]->ano_modelo}}</td>
                     <td>{{(float)$consumo[$i]->km_rodado}}</td>
-                    <td>{{number_format((float)($consumo[$i]->media_km_litros/$consumo[$i]->km_rodado),2,'.','')}}</td>
+                    <td>{{number_format((float)($consumo[$i]->mediaTot),2,'.','')}}</td>
                 </tr>
                 @endfor
                 </tbody>
@@ -60,7 +60,7 @@ for($k=0; $k < count($consumo); $k++){
                 <tr>
                     <td>Total Resultado</td>
                     <td>{{(float)$totalConsumos[$j]->total_km}}</td>
-                    <td>{{number_format((float)($totalConsumos[$j]->total_km/$totalConsumos[$j]->total_km_litros),2,'.','')}}</td>
+                    <td>{{number_format((float)($totalConsumos[$j]->mediaTot),2,'.','')}}</td>
                 </tr>
                 @endfor
                 </tbody>
@@ -112,7 +112,7 @@ for($k=0; $k < count($consumo); $k++){
         $('.data-table thead tr:eq(1) th').each( function (i) {
             var title = $(this).text();
             $(this).html( '<input type="text"/>' );
-     
+
             $( 'input', this ).on( 'keyup change', function () {
                 if ( table.column(i).search() !== this.value ) {
                     table
@@ -131,6 +131,10 @@ for($k=0; $k < count($consumo); $k++){
             ]
         }
     );
+    });
+    $( "#selectName" ).change(function() {
+        let val = $("#selectName option:selected").text();
+        $.post('external', {val: val});
     });
 </script>
 @stop

@@ -105,11 +105,30 @@ class EventoController extends Controller
         $totGeral = DB::table('relatorio_eventos')
         ->select(DB::RAW(' count(descricao_evento) as count'))
         ->get();
+
         $tempoParadoChart = DB::table('relatorio_eventos')
         ->select(DB::RAW('motorista,count(descricao_evento) as tempo_parado'))
         ->WHERE('descricao_evento','like',DB::RAW("'%tempo%'"))
         ->groupBy('motorista')
-        ->orderBy('motorista','desc')
+        ->orderBy('tempo_parado','desc')
+        ->get();
+        $tempoParadoChart2 = DB::table('relatorio_eventos')
+        ->select(DB::RAW('motorista,count(descricao_evento) as tempo_parado'))
+        ->WHERE('descricao_evento','like',DB::RAW("'%marcha%'"))
+        ->groupBy('motorista')
+        ->orderBy('tempo_parado','desc')
+        ->get();
+        $tempoParadoChart3 = DB::table('relatorio_eventos')
+        ->select(DB::RAW('motorista,count(descricao_evento) as tempo_parado'))
+        ->WHERE('descricao_evento','like',DB::RAW("'%rodo%seco%'"))
+        ->groupBy('motorista')
+        ->orderBy('tempo_parado','desc')
+        ->get();
+        $tempoParadoChart4 = DB::table('relatorio_eventos')
+        ->select(DB::RAW('motorista,count(descricao_evento) as tempo_parado'))
+        ->WHERE('descricao_evento','like',DB::RAW("'%rot%'"))
+        ->groupBy('motorista')
+        ->orderBy('tempo_parado','desc')
         ->get();
 
         $motoristaInfracao= DB::select("
@@ -131,6 +150,9 @@ class EventoController extends Controller
             'totRotacao' =>$totRotacao,
             'totGeral'=>$totGeral,
             'tempoParadoChart' =>json_decode($tempoParadoChart),
+            'tempoParadoChart2' =>json_decode($tempoParadoChart2),
+            'tempoParadoChart3' =>json_decode($tempoParadoChart3),
+            'tempoParadoChart4' =>json_decode($tempoParadoChart4),
             'motoristaInfracao' => $motoristaInfracao
         ]);
     }
