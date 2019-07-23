@@ -132,14 +132,16 @@ class EventoController extends Controller
         ->get();
 
         $motoristaInfracao= DB::select("
-        select case when motorista = '' then 'SEM MOTORISTA' ELSE motorista END as motorista
+        select case when motorista = '' then 'SEM MOTORISTA' ELSE LTRIM(motorista) END as motorista
+        ,b.base_vinculo as base
         ,count(descricao_evento) as contador
         ,(select count(descricao_evento) FROM relatorio_eventos WHERE motorista = a.motorista AND descricao_evento like '%tempo%') AS tempo_parado
         ,(select count(descricao_evento) FROM relatorio_eventos WHERE motorista = a.motorista AND descricao_evento like '%marcha%') as marcha_lenta
         ,(select count(descricao_evento) FROM relatorio_eventos WHERE motorista = a.motorista AND descricao_evento like '%rodo%seco%') AS rod_seco
         ,(select count(descricao_evento) FROM relatorio_eventos WHERE motorista = a.motorista AND descricao_evento like '%rot%') AS rotacao
         from relatorio_eventos a
-        GROUP BY motorista
+        LEFT OUTER JOIN bcMotorista b ON b.nome like LTRIM(a.motorista)
+        GROUP BY motorista,b.base_vinculo
         ORDER BY contador DESC
         ");
 

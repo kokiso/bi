@@ -113,7 +113,37 @@ class PlacaController extends Controller
     }
 
     public function externalView($val){
-        return $val;
+        if($val == null){
+            $val = 0;
+        }
+        $consumoMedia = db::select("select a.veiculo
+        ,b.frota
+        ,count(a.veiculo) as avaliadas
+        ,c.meta_media as media_ideal
+        ,sum(CAST(a.consumo AS float)) / sum(CAST(a.distancia AS float)) AS media_real
+        ,(select count(consumo) from relatorio_trechos WHERE cast(consumo as float) < 2.9 AND veiculo = a.veiculo) AS fora_media
+        ,(SELECT count(consumo) FROM relatorio_trechos WHERE (cast(consumo as float) < 2) AND veiculo = a.veiculo) AS abaixo_2kml
+        ,(SELECT count(consumo) FROM relatorio_trechos WHERE (cast(consumo as float) BETWEEN 2 AND 2.9) AND veiculo = a.veiculo) AS entre_2kml_29kml
+        ,(SELECT count(consumo) FROM relatorio_trechos WHERE (cast(consumo as float) > 2.9) AND veiculo = a.veiculo) AS acima_29kml
+        ,(SELECT count(consumo) FROM relatorio_trechos WHERE (cast(consumo as float) > 2.9) AND veiculo = a.veiculo)*100 / count(a.veiculo) AS realizado
+        ,b.modelo AS modelo
+        ,sum(CAST(a.faixa_verde AS float)) / count(a.veiculo) AS media_fv_real
+        ,(select count(a.   faixa_verde) from relatorio_trechos a
+        WHERE a.faixa_verde < '50') AS fora_media_fv
+        ,(SELECT count(faixa_verde) FROM relatorio_trechos WHERE (cast(faixa_verde as float ) < 10) AND veiculo = a.veiculo) AS abaixo_10_fv
+        ,(SELECT count(faixa_verde) FROM relatorio_trechos WHERE (cast(faixa_verde as float) BETWEEN 10 AND 20) and veiculo = a.veiculo) AS entre_10_22_fv
+        ,(SELECT count(faixa_verde) FROM relatorio_trechos WHERE (cast(faixa_verde as float) > 50) AND veiculo = a.veiculo) AS acima_50_fv
+        ,(SELECT count(faixa_verde) FROM relatorio_trechos WHERE (cast(faixa_verde as float) > 50) AND veiculo = a.veiculo)*100 / count(a.veiculo) AS realizado_fv
+        FROM relatorio_trechos a
+        LEFT OUTER JOIN bcFrota b ON b.placa_atual = a.veiculo
+        LEFT OUTER JOIN metaMedia c ON c.veiculos = b.classe_mec
+        WHERE b.frota = '".$val."'
+        group by a.veiculo,b.frota,c.meta_media,b.modelo
+        ");
+
+        $view = view("placas.home.external",compact( $consumoMedia))->render();
+
+        return response()->json(['html'=>$view]);
     }
 
     public function export()

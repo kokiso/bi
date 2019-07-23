@@ -1,40 +1,5 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-@php
-    $val = 30317;
-    if(isset($_POST['val']))
-    $val = $_POST['val'];
-    $consumoMedia = db::select("select a.veiculo,b.frota, count(a.veiculo) as avaliadas
-        ,c.meta_media as media_ideal
-        ,sum(CAST(a.consumo AS float)) / sum(CAST(a.distancia AS float)) AS media_real
-            ,(select count(a.consumo) from relatorio_trechos a
-            LEFT OUTER JOIN bcFrota b ON b.placa_atual = a.veiculo
-            LEFT OUTER JOIN metaMedia c ON c.veiculos = b.classe_mec
-            WHERE a.consumo <> c.meta_media) AS fora_media
-        ,(SELECT count(consumo) FROM relatorio_trechos WHERE (cast(consumo as float) < 2) AND b.frota = ".$val.") AS abaixo_2kml
-        ,(SELECT count(consumo) FROM relatorio_trechos WHERE (cast(consumo as float) BETWEEN 2 AND 2.9) AND b.frota = ".$val.") AS entre_2kml_29kml
-        ,(SELECT count(consumo) FROM relatorio_trechos WHERE (cast(consumo as float) > 2.9) AND b.frota = ".$val.") AS acima_29kml
-        ,(SELECT count(consumo) FROM relatorio_trechos WHERE (cast(consumo as float) > 2.9) AND b.frota = ".$val.")*100 / count(a.veiculo) AS realizado
-        ,b.modelo AS modelo
-        ,sum(CAST(a.faixa_verde AS float)) / count(a.veiculo) AS media_fv_real
-        ,(select count(a.faixa_verde) from relatorio_trechos a
-        LEFT OUTER JOIN bcFrota b ON b.placa_atual = a.veiculo
-        LEFT OUTER JOIN metaMedia c ON c.veiculos = b.classe_mec
-        WHERE a.faixa_verde <> '50') AS fora_media_fv
-        ,(SELECT count(faixa_verde) FROM relatorio_trechos WHERE (cast(faixa_verde as float ) < 10) AND b.frota = ".$val.") AS abaixo_10_fv
-        ,(SELECT count(faixa_verde) FROM relatorio_trechos WHERE (cast(faixa_verde as float) BETWEEN 10 AND 20) and b.frota = ".$val.") AS entre_10_22_fv
-        ,(SELECT count(faixa_verde) FROM relatorio_trechos WHERE (cast(faixa_verde as float) > 50) AND b.frota = ".$val.") AS acima_50_fv
-        ,(SELECT count(faixa_verde) FROM relatorio_trechos WHERE (cast(faixa_verde as float) > 50) AND b.frota = ".$val.")*100 / count(a.veiculo) AS realizado_fv
-        FROM relatorio_trechos a
-        LEFT OUTER JOIN bcFrota b ON b.placa_atual = a.veiculo
-        LEFT OUTER JOIN metaMedia c ON c.veiculos = b.classe_mec
-        WHERE b.frota = '".$val."'
-        group by a.veiculo,b.frota,c.meta_media,b.modelo
-        ");
-@endphp
-<div class="col-md-4">
-    {{Form::label('veiculoMedio', 'Escolha a Frota')}}
-    {{Form::select('selectName', $frotas, null,['class'=>'form-control','id'=>'selectName'])}}
-</div>
+
 <style type="text/css">
     td{
         text-align: center;
@@ -170,4 +135,5 @@
                 </table>
             </div>
         </div>
+
 

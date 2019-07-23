@@ -1,3 +1,4 @@
+<meta name="csrf-token" content="{{ csrf_token() }}">:
 @extends('adminlte::page')
 
 @section('title', 'AdminLTE')
@@ -16,6 +17,11 @@ for($k=0; $k < count($consumo); $k++){
 ?>
 @section('content')
 <div class="row">
+    <div class="col-md-4">
+                {{Form::label('veiculoMedio', 'Escolha a Frota')}}
+                {{Form::select('selectName', $frotas, null,['class'=>'form-control','id'=>'selectName'])}}
+    </div>
+    <div class="container"> </div>
     @include('placas.home.external')
     <div class="col-md-12">
         <div class="table-responsive bordered" style="max-height:250px;background-color:white;border:0.5px">
@@ -132,10 +138,37 @@ for($k=0; $k < count($consumo); $k++){
         }
     );
     });
-    $( "#selectName" ).change(function() {
-        let val = $("#selectName option:selected").text();
-        $.post('external', {val: val});
-    });
 </script>
 @stop
+@section('js')
+        <script>
+             $( "#selectName" ).change(function(e) {
+                e.preventDefault();
+
+                let val = $("#selectName option:selected").text();
+                $.ajaxSetup({
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    }
+                });
+                $.ajax(
+                {
+                    url: "external",
+                    data: val,
+                    type: 'GET',
+
+                }).done(
+
+                    function(data)
+
+                    {
+
+                        $('.container').html(data.html);
+
+                    }
+
+                );
+            });
+        </script>
+        @stop
 @stop

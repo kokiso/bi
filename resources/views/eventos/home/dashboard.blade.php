@@ -31,11 +31,12 @@
 @stop
 @section('content')
 <div class="col-md-11" style="margin-left:50px">
-    <div class="table-responsive" style="max-height:500px">
-        <table class="data-table">
+    <div class="table-responsive" style="max-height:600px">
+        <table class="table table-bordered table-hover dataTable data-table">
             <thead class>
             <tr style="background-color:lightblue">
                 <th> Rotulo de linha </th>
+                <th> Base Vinculo </th>
                 <th> tempo parado</th>
                 <th> tempo marcha lenta	excessiva</th>
                 <th> excesso velocidade trecho trecho rod. seco </th>
@@ -46,7 +47,8 @@
             <tbody>
             @for($i=0;$i<count($motoristaInfracao);$i++)
             <tr>
-                <td>{{$motoristaInfracao[$i]->motorista}}</td>
+                <td style="width:300px">{{$motoristaInfracao[$i]->motorista}}</td>
+                <td style="width:150px">{{$motoristaInfracao[$i]->base}}</td>
                 <td>{{$motoristaInfracao[$i]->tempo_parado}}</td>
                 <td>{{$motoristaInfracao[$i]->marcha_lenta}}</td>
                 <td>{{$motoristaInfracao[$i]->rod_seco}}</td>
@@ -101,49 +103,61 @@
 </div>
 @section('js')
 <script>
-       $(document).ready(function () {
-        $('.data-table').dataTable(
-        {   "pageLength": 5
+           $(document).ready(function () {
+
+$('.data-table thead tr').clone(true).appendTo( '.data-table thead' );
+$('.data-table thead tr:eq(1) th').each( function (i) {
+    var title = $(this).text();
+    $(this).html( '<input type="text"/ style = "width: 100px">' );
+
+    $( 'input', this ).on( 'keyup change', function () {
+        if ( table.column(i).search() !== this.value ) {
+            table
+                .column(i)
+                .search( this.value )
+                .draw();
         }
-    );
-    var currentChart;
-
-        function updateChart() {
-            if(currentChart){currentChart.destroy();}
-
-            var determineChart = $("#chartType").val();
-
-            var params = dataMap[determineChart]
-            currentChart = new Chart(ctx)[params.method](params.data, {});
-        }
-
-        $('#chartType').on('change', updateChart)
-            updateChart();
-    });
+    } );
+} );
+let table = $('.data-table').DataTable(
+{   "pageLength": 5,
+    "orderCellsTop": true,
+    "fixedHeader": true,
+    "columnDefs": [
+        { "width": "5%", "targets": 0 }
+    ]
+}
+);
+});
 </script>
 @stop
-    <script>
-        $(function () {
-            let total = new Array();
-            let i = 0;
+<script>
+var currentChart;
+var dataMap;
+var ctx3 = document.getElementById("tempoParadoChart").getContext('2d');
+var ctx2 = document.getElementById("InfracaoChart").getContext('2d');
+       $(document).ready(function () {
 
-            let motoristaChart = <?php echo json_encode($motoristaChart)?>;
-            let infracaomotChart = <?php echo json_encode($infracaomotChart)?>;
-            let motoristaChart2 = <?php echo json_encode($motoristaChart2)?>;
-            let infracaomotChart2 = <?php echo json_encode($infracaomotChart2)?>;
-            let motoristaChart3 = <?php echo json_encode($motoristaChart3)?>;
-            let infracaomotChart3 = <?php echo json_encode($infracaomotChart3)?>;
-            let motoristaChart4 = <?php echo json_encode($motoristaChart4)?>;
-            let infracaomotChart4 = <?php echo json_encode($infracaomotChart4)?>;
+			var total = new Array();
+            var i = 0;
 
-            let motoristaInfracaoChart = <?php echo json_encode($motoristaInfracaoChart)?>;
+            var motoristaChart = <?php echo json_encode($motoristaChart)?>;
+            var infracaomotChart = <?php echo json_encode($infracaomotChart)?>;
+            var motoristaChart2 = <?php echo json_encode($motoristaChart2)?>;
+            var infracaomotChart2 = <?php echo json_encode($infracaomotChart2)?>;
+            var motoristaChart3 = <?php echo json_encode($motoristaChart3)?>;
+            var infracaomotChart3 = <?php echo json_encode($infracaomotChart3)?>;
+            var motoristaChart4 = <?php echo json_encode($motoristaChart4)?>;
+            var infracaomotChart4 = <?php echo json_encode($infracaomotChart4)?>;
 
-            let infracaoTempoParadoChart = <?php echo json_encode($infracaoTempoParadoChart)?>;
-            let infracaoMarchaLentaChart = <?php echo json_encode($infracaoMarchaLentaChart)?>;
-            let infracaoRodSecoChart = <?php echo json_encode($infracaoRodSecoChart)?>;
-            let infracaoRotacaoChart = <?php echo json_encode($infracaoRotacaoChart)?>;
+            var motoristaInfracaoChart = <?php echo json_encode($motoristaInfracaoChart)?>;
 
-            var dataMap = {
+            var infracaoTempoParadoChart = <?php echo json_encode($infracaoTempoParadoChart)?>;
+            var infracaoMarchaLentaChart = <?php echo json_encode($infracaoMarchaLentaChart)?>;
+            var infracaoRodSecoChart = <?php echo json_encode($infracaoRodSecoChart)?>;
+            var infracaoRotacaoChart = <?php echo json_encode($infracaoRotacaoChart)?>;
+
+            dataMap = {
                 "1":{
                     type: 'pie',
                     data:{
@@ -187,7 +201,7 @@
                     data:{
                     labels:motoristaChart3,
                         datasets:[{
-                            label:'3',
+                            label:'Excesso de velocidade em pista seco',
                             data:infracaomotChart3,
                             backgroundColor:['lightblue',
                             'lightgreen',
@@ -206,7 +220,7 @@
                     data:{
                     labels:motoristaChart4,
                         datasets:[{
-                            label:'4',
+                            label:'Excesso de Rotacao',
                             data:infracaomotChart4,
                             backgroundColor:['lightblue',
                             'lightgreen',
@@ -221,21 +235,27 @@
                     }
                 }
             };
-            var ctx3 = document.getElementById("tempoParadoChart").getContext('2d');
-            ctx3.height = 500;
-            var ctx2 = document.getElementById("InfracaoChart").getContext('2d');
-            var options =
-        {
-            tooltipTemplate: "<%= value %>",
 
-            showTooltips: true,
+            currentChart = new Chart(ctx3, {
+                type: 'pie',
+                data:{
+                    labels:motoristaChart,
+                    datasets:[{
+                        label:'Tempo Parado',
+                        data:infracaomotChart,
+                        backgroundColor:['lightblue',
+                        'lightgreen',
+                        'yellow',
+                        'gray',
+                        'orange',
+                        'purple',
+                        'red',
+                        'pink'
+                        ]
+                    }]
+                }
+            });
 
-            onAnimationComplete: function()
-            {
-                this.showTooltip(this.datasets[0].points, true);
-            },
-            tooltipEvents: []
-        }
             var myChart = new Chart(ctx2, {
                 type: 'bar',
                 hover: { animationDuration: 0},
@@ -293,5 +313,17 @@
             });
 
         });
-    </script>
+  function updateChart() {
+    if(typeof currentChart != "undefined"){
+    	currentChart.destroy();
+    }
+
+    var determineChart = $("#chartType").val();
+
+    var params = dataMap[determineChart]
+    currentChart = new Chart(ctx3, params);
+  }
+
+  $('#chartType').on('change', updateChart);
+        </script>
 @stop

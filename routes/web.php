@@ -32,7 +32,7 @@ $this->group(['middleware'=>'auth'],function(){
     $this->post('update', 'MetaMediaController@update')->name('update');
 
     //tela external
-    $this->post('placa/external', 'Placa\PlacaController@externalView')->name('external');
+    Route::get('external', 'Placa\PlacaController@externalView');
 });
 
 Route::get('/','Admin\AdminController@index')->name('home');
