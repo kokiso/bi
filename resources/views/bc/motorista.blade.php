@@ -22,7 +22,24 @@
                 <button class="btn btn-success">Importar</button>
             </form>
         </div>
-</div>
+    </div>
+    <div style="background-color:white" >
+            <h2 style="text-align:center">Ajuda:</h2>
 
+            <ul>
+            <li><b>IMPORTAR SEM CABECALHO<b></li>
+            <li>Ordem das colunas:</li>
+            <ul>
+                    <li>NOME</li>
+                    <li>MATRÍCULA</li>
+                    <li>Status</li>
+                    <li>BASE VÍNCULO</li>
+                    <li>CARGO</li>
+                    <li>CPF</li>
+                    <li>RG</li>
+                </ul>
+            </ul>
+    </div>
+</div>
 </body>
 @stop

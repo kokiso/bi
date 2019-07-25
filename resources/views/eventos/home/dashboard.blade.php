@@ -3,8 +3,7 @@
 @section('title', 'AdminLTE')
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
 <?php
-// var_dump($motoristaInfracao);
-    for($i=0; $i<8; $i++){
+    for($i=0; $i<13; $i++){
         $motoristaChart[] = substr($tempoParadoChart[$i]->motorista,0,10);
         $motoristaChart2[] = substr($tempoParadoChart2[$i]->motorista,0,10);
         $motoristaChart3[] = substr($tempoParadoChart3[$i]->motorista,0,10);
@@ -21,7 +20,7 @@
         $infracaoRodSecoChart[] = $motoristaInfracao[$i]->rod_seco;
         $infracaoRotacaoChart[] = $motoristaInfracao[$i]->rotacao;
 
-        if($i == 7){
+        if($i == 12){
         break;
      }
     }
@@ -31,6 +30,7 @@
 @stop
 @section('content')
 <div class="col-md-11" style="margin-left:50px">
+    <div class="ref_search"></div>
     <div class="table-responsive" style="max-height:600px">
         <table class="table table-bordered table-hover dataTable data-table">
             <thead class>
@@ -111,15 +111,15 @@ $('.data-table thead tr:eq(1) th').each( function (i) {
     $(this).html( '<input type="text"/ style = "width: 100px">' );
 
     $( 'input', this ).on( 'keyup change', function () {
-        if ( table.column(i).search() !== this.value ) {
-            table
+        if ( ref_table.column(i).search() !== this.value ) {
+            ref_table
                 .column(i)
                 .search( this.value )
                 .draw();
         }
     } );
 } );
-let table = $('.data-table').DataTable(
+let ref_table = $('.data-table').DataTable(
 {   "pageLength": 5,
     "orderCellsTop": true,
     "fixedHeader": true,
@@ -128,6 +128,29 @@ let table = $('.data-table').DataTable(
     ]
 }
 );
+var search = $(
+            '<div class="ref_field">'+
+                '<div class="ref_label"> <h3 style="text-align:center">Filtro por Base Vinculo:</h3></div>'+
+                '<div class="ref_input"></div>'+
+            '</div>'
+        ).appendTo( 'div.ref_search' );
+
+        ref_table.column(1).data().unique().each( function (item, i) {
+            var input = search.find('div.ref_input');
+
+            input.append(
+                $('<button class="btn btn-info btn-flat" style="color:black;font-weight:bolder">'+item+'</a>')
+                    .on( 'click', function () {
+                        $(this).toggleClass('active');
+
+                        var items = input.find('.active').map( function () {
+                            return $(this).text();
+                        } ).toArray().join('|');
+
+                        ref_table.column(1).search( items, true, false ).draw();
+                    } )
+            );
+        } );
 });
 </script>
 @stop
@@ -172,7 +195,12 @@ var ctx2 = document.getElementById("InfracaoChart").getContext('2d');
                             'orange',
                             'purple',
                             'red',
-                            'pink'
+                            'pink',
+                            'rgba(255, 99, 132, 0.2)',
+                            'rgba(54, 162, 235, 0.2)',
+                            'rgba(255, 206, 86, 0.2)',
+                            'rgba(75, 192, 192, 0.2)',
+                            'rgba(153, 102, 255, 0.2)'
                             ]
                         }]
                     }
@@ -191,7 +219,12 @@ var ctx2 = document.getElementById("InfracaoChart").getContext('2d');
                             'orange',
                             'purple',
                             'red',
-                            'pink'
+                            'pink',
+                            'rgba(255, 99, 132, 0.2)',
+                            'rgba(54, 162, 235, 0.2)',
+                            'rgba(255, 206, 86, 0.2)',
+                            'rgba(75, 192, 192, 0.2)',
+                            'rgba(153, 102, 255, 0.2)'
                             ]
                         }]
                     }
@@ -210,7 +243,12 @@ var ctx2 = document.getElementById("InfracaoChart").getContext('2d');
                             'orange',
                             'purple',
                             'red',
-                            'pink'
+                            'pink',
+                            'rgba(255, 99, 132, 0.2)',
+                            'rgba(54, 162, 235, 0.2)',
+                            'rgba(255, 206, 86, 0.2)',
+                            'rgba(75, 192, 192, 0.2)',
+                            'rgba(153, 102, 255, 0.2)'
                             ]
                         }]
                     }
@@ -229,7 +267,12 @@ var ctx2 = document.getElementById("InfracaoChart").getContext('2d');
                             'orange',
                             'purple',
                             'red',
-                            'pink'
+                            'pink',
+                            'rgba(255, 99, 132, 0.2)',
+                            'rgba(54, 162, 235, 0.2)',
+                            'rgba(255, 206, 86, 0.2)',
+                            'rgba(75, 192, 192, 0.2)',
+                            'rgba(153, 102, 255, 0.2)'
                             ]
                         }]
                     }
@@ -244,13 +287,18 @@ var ctx2 = document.getElementById("InfracaoChart").getContext('2d');
                         label:'Tempo Parado',
                         data:infracaomotChart,
                         backgroundColor:['lightblue',
-                        'lightgreen',
-                        'yellow',
-                        'gray',
-                        'orange',
-                        'purple',
-                        'red',
-                        'pink'
+                            'lightgreen',
+                            'yellow',
+                            'gray',
+                            'orange',
+                            'purple',
+                            'red',
+                            'pink',
+                            'rgba(255, 99, 132, 0.2)',
+                            'rgba(54, 162, 235, 0.2)',
+                            'rgba(255, 206, 86, 0.2)',
+                            'rgba(75, 192, 192, 0.2)',
+                            'rgba(153, 102, 255, 0.2)'
                         ]
                     }]
                 }

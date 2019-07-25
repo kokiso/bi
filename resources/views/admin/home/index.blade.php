@@ -5,6 +5,7 @@
 @section('content_header')
 <h1>Dashboard</h1>
 @stop
+{{-- @php var_dump($_SESSION) @endphp --}}
 @section('content')
 <div class="row">
         <div class="col-md-6 col-sm-6 col-xs-12">

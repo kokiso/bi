@@ -133,7 +133,7 @@ class EventoController extends Controller
 
         $motoristaInfracao= DB::select("
         select case when motorista = '' then 'SEM MOTORISTA' ELSE LTRIM(motorista) END as motorista
-        ,b.base_vinculo as base
+        ,CASE WHEN b.base_vinculo IS NULL THEN 'SEM BASE' ELSE b.base_vinculo END as base
         ,count(descricao_evento) as contador
         ,(select count(descricao_evento) FROM relatorio_eventos WHERE motorista = a.motorista AND descricao_evento like '%tempo%') AS tempo_parado
         ,(select count(descricao_evento) FROM relatorio_eventos WHERE motorista = a.motorista AND descricao_evento like '%marcha%') as marcha_lenta

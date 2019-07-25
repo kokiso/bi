@@ -1,4 +1,4 @@
-<meta name="csrf-token" content="{{ csrf_token() }}">:
+<meta name="csrf-token" content="{{ csrf_token() }}">
 @extends('adminlte::page')
 
 @section('title', 'AdminLTE')
@@ -10,7 +10,7 @@
 for($k=0; $k < count($consumo); $k++){
     $placa[] = $consumo[$k]->frota;
     $kmtotal[] = number_format((float)($consumo[$k]->mediaTot),2,'.','');
-    if($k == 7){
+    if($k == 15){
         break;
      }
 }
@@ -21,10 +21,12 @@ for($k=0; $k < count($consumo); $k++){
                 {{Form::label('veiculoMedio', 'Escolha a Frota')}}
                 {{Form::select('selectName', $frotas, null,['class'=>'form-control','id'=>'selectName'])}}
     </div>
-    <div class="container"> </div>
-    @include('placas.home.external')
+    <div id="container">
+        @include('placas.home.external')
+    </div>
+
     <div class="col-md-12">
-        <div class="table-responsive bordered" style="max-height:250px;background-color:white;border:0.5px">
+        <div class="table-responsive bordered" style="max-height:450px;background-color:white;border:0.5px">
             <table class="data-table">
                 <thead style="background-color:lightblue">
                 <tr>
@@ -73,7 +75,7 @@ for($k=0; $k < count($consumo); $k++){
             </table>
         </div>
     </div>
-    <div class="col-md-7">
+    <div class="col-md-12">
             <canvas id="consumoChart"style="border-style:solid">></canvas>
     </div>
 </div>
@@ -138,37 +140,27 @@ for($k=0; $k < count($consumo); $k++){
         }
     );
     });
+
+    $( "#selectName" ).change(function(e) {
+        let val = $("#selectName option:selected").text();
+        $.ajax({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            },
+            type: 'GET',
+            dataType: 'text',
+            url: "dashboard",
+            data: 'val='+val,
+            success: function(data){
+                console.log(data);
+                document.getElementById('container').innerHTML = "";
+                document.getElementById('container').innerHTML= data;
+            },
+            error: function(){
+                alert('Erro no Ajax !');
+            }
+        });
+    });
 </script>
 @stop
-@section('js')
-        <script>
-             $( "#selectName" ).change(function(e) {
-                e.preventDefault();
-
-                let val = $("#selectName option:selected").text();
-                $.ajaxSetup({
-                    headers: {
-                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                    }
-                });
-                $.ajax(
-                {
-                    url: "external",
-                    data: val,
-                    type: 'GET',
-
-                }).done(
-
-                    function(data)
-
-                    {
-
-                        $('.container').html(data.html);
-
-                    }
-
-                );
-            });
-        </script>
-        @stop
 @stop
