@@ -12,9 +12,15 @@ class UsersTableSeeder extends Seeder
     public function run()
     {
         $admin = \App\User::create([
-            'name'     => 'admin admin',
+            'name'     => 'administrador',
             'email'    => 'admin@admin.com',
-            'password' => bcrypt('admin'),
+            'password' => bcrypt('admin123'),
+        ]);
+
+        $user = \App\User::create([
+            'name'     => 'usuario',
+            'email'    => 'usuario@usuario.com.br',
+            'password' => bcrypt('usuario123'),
         ]);
     }
 }
