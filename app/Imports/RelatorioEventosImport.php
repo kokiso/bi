@@ -14,10 +14,10 @@ class RelatorioEventosImport implements ToModel, WithHeadingRow
     * @return \Illuminate\Database\Eloquent\Model|null
     */
     public function model(array $row)
-    {   
+    {
         return new RelatorioEventos([
             'data' => $this->clearStr($row['data']),
-            'hora' => $this->clearStr($row['hora']),
+            'hora' => (string)$this->clearStr($row['hora']),
             'filial' => $this->clearStr($row['filial']),
             'veiculo' => $this->clearStr($row['veiculo']),
             'grupo_motorista' => $this->clearStr($row['grupo_motorista']),
@@ -35,7 +35,7 @@ class RelatorioEventosImport implements ToModel, WithHeadingRow
     {
         return 2;
     }
-    public function clearStr($str) {  
+    public function clearStr($str) {
         $str = str_replace('(UTC-3)', '', $str);
         $str = str_replace('RTE', '', $str);
         $str = preg_replace('/[^A-Za-z0-9\-.:, ]/', '-', $str);

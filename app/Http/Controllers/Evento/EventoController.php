@@ -181,6 +181,14 @@ class EventoController extends Controller
         ->where('tipo_evento','like','PR-%')
         ->delete();
 
-        return redirect('/evento');
+        DB::table('relatorio_eventos')
+        ->where('data','like','')
+        ->delete();
+
+        DB::table('relatorio_eventos')
+        ->where('data','like','%Pedal%')
+        ->delete();
+
+        return redirect('/evento/dashboard');
     }
 }

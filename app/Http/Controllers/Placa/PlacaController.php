@@ -157,6 +157,8 @@ class PlacaController extends Controller
 
         DB::table('relatorio_trechos')->where('faixa_verde','0')->delete();
 
+        DB::table('relatorio_trechos')->where('veiculo','')->delete();
+
         return redirect('/placa');
     }
 

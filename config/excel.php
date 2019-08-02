@@ -116,7 +116,59 @@ return [
         */
         'pdf'      => Excel::DOMPDF,
     ],
-
+    'cache' => [
+        /*
+        |--------------------------------------------------------------------------
+        | Default cell caching driver
+        |--------------------------------------------------------------------------
+        |
+        | By default PhpSpreadsheet keeps all cell values in memory, however when
+        | dealing with large files, this might result into memory issues. If you
+        | want to mitigate that, you can configure a cell caching driver here.
+        | When using the illuminate driver, it will store each value in a the
+        | cache store. This can slow down the process, because it needs to
+        | store each value. You can use the "batch" store if you want to
+        | only persist to the store when the memory limit is reached.
+        |
+        | Drivers: memory|illuminate|batch
+        |
+        */
+        'driver'     => 'memory',
+        /*
+        |--------------------------------------------------------------------------
+        | Default Value Binder
+        | Batch memory caching
+        |--------------------------------------------------------------------------
+        |
+        | PhpSpreadsheet offers a way to hook into the process of a value being
+        | written to a cell. In there some assumptions are made on how the
+        | value should be formatted. If you want to change those defaults,
+        | you can implement your own default value binder.
+        | When dealing with the "batch" caching driver, it will only
+        | persist to the store when the memory limit is reached.
+        | Here you can tweak the memory limit to your liking.
+        |
+        */
+        'default' => Maatwebsite\Excel\DefaultValueBinder::class,
+        'batch'     => [
+            'memory_limit' => 60000,
+        ],
+        /*
+        |--------------------------------------------------------------------------
+        | Illuminate cache
+        |--------------------------------------------------------------------------
+        |
+        | When using the "illuminate" caching driver, it will automatically use
+        | your default cache store. However if you prefer to have the cell
+        | cache on a separate store, you can configure the store name here.
+        | You can use any store defined in your cache config. When leaving
+        | at "null" it will use the default store.
+        |
+        */
+        'illuminate' => [
+            'store' => null,
+        ],
+    ],
     'value_binder' => [
 
         /*
