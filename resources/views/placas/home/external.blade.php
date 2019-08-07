@@ -50,9 +50,24 @@
                     <td>{{(float)$consumoMedia[$i]->media_ideal}}</td>
                     <td>{{number_format((float)$consumoMedia[$i]->media_real,2,'.','')}}</td>
                     <td>{{$consumoMedia[$i]->fora_media}}</td>
-                    <td>{{$consumoMedia[$i]->abaixo_2kml}}</td>
-                    <td>{{$consumoMedia[$i]->entre_2kml_29kml}}</td>
-                    <td>{{$consumoMedia[$i]->acima_29kml}}</td>
+                     @if (($consumoMedia[$i]->abaixo_2kml >= $consumoMedia[$i]->entre_2kml_29kml) && ($consumoMedia[$i]->abaixo_2kml >= $consumoMedia[$i]->acima_29kml))
+                            <td style="background-color:#f56161;font-weight:bold">{{$consumoMedia[$i]->abaixo_2kml}}</td>
+                        @else
+                           
+                            <td>{{$consumoMedia[$i]->abaixo_2kml}} </td>
+                        @endif
+
+                        @if (((int)$consumoMedia[$i]->entre_2kml_29kml >= (int)$consumoMedia[$i]->abaixo_2kml) && ((int)$consumoMedia[$i]->entre_2kml_29kml >= (int)$consumoMedia[$i]->acima_29kml))
+                        <td style="background-color:yellow;font-weight:bold">{{$consumoMedia[$i]->entre_2kml_29kml}} </td>
+                        @else
+                            <td>{{$consumoMedia[$i]->entre_2kml_29kml}} </td>
+                        @endif
+
+                        @if (((int)$consumoMedia[$i]->acima_29kml >= (int)$consumoMedia[$i]->abaixo_2kml) && ((int)$consumoMedia[$i]->acima_29kml >= (int)$consumoMedia[$i]->entre_2kml_29kml))
+                            <td style="background-color:green;font-weight:bold">{{$consumoMedia[$i]->acima_29kml}} </td>
+                        @else
+                            <td>{{$consumoMedia[$i]->acima_29kml}} </td>
+                        @endif
                     <td>90</td>
                     <td>{{number_format((float)$consumoMedia[$i]->realizado,2,'.','')}}</td>
                     <td>{{number_format((float)$consumoMedia[$i]->farol,2,'.','')}}</td>
@@ -118,22 +133,24 @@
                         <td>{{number_format((float)$consumoMedia[$i]->media_fv_real,2,'.','')}}</td>
                         <td>{{$consumoMedia[$i]->fora_media_fv}}</td>
 
-                        @if ((int)$consumoMedia[$i]->abaixo_10_fv > (int)$consumoMedia[$i]->entre_10_22_fv && (int)$consumoMedia[$i]->abaixo_10_fv > (int)$consumoMedia[$i]->acima_50_fv)
-                            <td style="backgound-color:#f56161">{{$consumoMedia[$i]->abaixo_10_fv}}</td>
+                        @if (($consumoMedia[$i]->abaixo_10_fv >= $consumoMedia[$i]->entre_10_22_fv) && ($consumoMedia[$i]->abaixo_10_fv >= $consumoMedia[$i]->acima_50_fv))
+                            
+                            <td style="background-color:#f56161;font-weight:bold">{{$consumoMedia[$i]->abaixo_10_fv}}</td>
                         @else
-                            <td>{{$consumoMedia[$i]->abaixo_10_fv}}</td>
+                           
+                            <td>{{$consumoMedia[$i]->abaixo_10_fv}} </td>
                         @endif
 
-                        @if ((int)$consumoMedia[$i]->entre_10_22_fv > (int)$consumoMedia[$i]->abaixo_10_fv && (int)$consumoMedia[$i]->entre_10_22_fv > (int)$consumoMedia[$i]->acima_50_fv)
-                        <td style="backgound-color:yellow">{{$consumoMedia[$i]->entre_10_22_fv}}</td>
+                        @if (((int)$consumoMedia[$i]->entre_10_22_fv >= (int)$consumoMedia[$i]->abaixo_10_fv) && ((int)$consumoMedia[$i]->entre_10_22_fv >= (int)$consumoMedia[$i]->acima_50_fv))
+                        <td style="background-color:yellow;font-weight:bold">{{$consumoMedia[$i]->entre_10_22_fv}} </td>
                         @else
-                            <td>{{$consumoMedia[$i]->entre_10_22_fv}}</td>
+                            <td>{{$consumoMedia[$i]->entre_10_22_fv}} </td>
                         @endif
 
-                        @if ((int)$consumoMedia[$i]->acima_50_fv > (int)$consumoMedia[$i]->abaixo_10_fv && (int)$consumoMedia[$i]->acima_50_fv > (int)$consumoMedia[$i]->entre_10_22_fv)
-                        <td style="backgound-color:green">{{$consumoMedia[$i]->acima_50_fv}}</td>
+                        @if (((int)$consumoMedia[$i]->acima_50_fv >= (int)$consumoMedia[$i]->abaixo_10_fv) && ((int)$consumoMedia[$i]->acima_50_fv >= (int)$consumoMedia[$i]->entre_10_22_fv))
+                            <td style="background-color:green;font-weight:bold">{{$consumoMedia[$i]->acima_50_fv}} </td>
                         @else
-                            <td>{{$consumoMedia[$i]->acima_50_fv}}</td>
+                            <td>{{$consumoMedia[$i]->acima_50_fv}} </td>
                         @endif
                         <td>80</td>
                         <td>{{number_format((float)$consumoMedia[$i]->realizado_fv,2,'.','')}}</td>

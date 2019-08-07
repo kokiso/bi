@@ -89,7 +89,7 @@ for($i=0; $i<count($base); $i++){
 <div class="row">
     <div class="col-md-6" style="border:black,1px,1px,1px,1px">
             <div class="table-responsive" style="max-height:220px">
-            <table class="data-table1">
+            <table id="table1" class="data-table1">
                 <thead style="background-color:lightgray">
                 <tr>
                     <th></th>
@@ -115,7 +115,7 @@ for($i=0; $i<count($base); $i++){
     <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
     <div class="col-md-6">
         <div class="table-responsive" style="max-height:320px">
-            <table class="data-table">
+            <table  id="table2" class="data-table">
                 <thead>
                 <tr>
                     <th style="background-color:lightblue">Rotulos de Linha</th>
@@ -140,120 +140,220 @@ for($i=0; $i<count($base); $i++){
         <canvas id="motoristaInfracoesChart"style="border-style:solid"></canvas>
     </div>
 </div>
-@section('js')
-<script>
-    $(document).ready(function () {
-        $('.data-table').dataTable();
-        $('.data-table1').dataTable();
-    });
-</script>
-@stop
-<script>
-$(function () {
+    @section('js')
+    <script>
+        let motoristaChart = <?php echo json_encode($motoristaChart)?>;
+        let infracaomotChart = <?php echo json_encode($infracaomotChart)?>;
+        let basechart = <?php echo json_encode($basechart)?>;
+        let ifnracaoBaseChart = <?php echo json_encode($ifnracaoBaseChart)?>;
 
-    let motoristaChart = <?php echo json_encode($motoristaChart)?>;
-    let infracaomotChart = <?php echo json_encode($infracaomotChart)?>;
-    let basechart = <?php echo json_encode($basechart)?>;
-    let ifnracaoBaseChart = <?php echo json_encode($ifnracaoBaseChart)?>;
-    //let matriz = <?//php echo (int)$matriz[0]->count?>;
 
-    var ctx1 = document.getElementById("baseVinculoChart").getContext('2d');
-    var ctx2 = document.getElementById("analiticoMotoristaChart").getContext('2d');
-    var ctx3 = document.getElementById("motoristaInfracoesChart").getContext('2d');
-    //var ctx = document.getElementById("punicaoChart").getContext('2d');
+        var ctx1 = document.getElementById("baseVinculoChart").getContext('2d');
+        var ctx2 = document.getElementById("analiticoMotoristaChart").getContext('2d');
+        var ctx3 = document.getElementById("motoristaInfracoesChart").getContext('2d');
 
-    var myChart = new Chart(ctx3, {
-        type: 'line',
-        options: {
-                scales: {
-                    xAxes: [{
-                        ticks: {
-                            fontSize: 8
-                        }
-                        }]
-                    }
-                },
-        data:{
-            labels:motoristaChart,
-            datasets:[{
-                label:'Motorista x Infracao',
-                data:infracaomotChart,
-                  pointBackgroundColor:['lightblue',
-                        'lightgreen',
-                        'yellow',
-                        'gray',
-                        'orange',
-                        'purple',
-                        'red',
-                        'pink']
-            }]
-        }
-    });
-    var myChart = new Chart(ctx2, {
-        type: 'bar',
-        options: {
-                scales: {
-                    xAxes: [{
-                        ticks: {
-                            fontSize: 10
-                        }
-                        }]
-                    }
-                },
-        data:{
-            labels:motoristaChart,
-            datasets:[{
-                label:'Analitico Motorista',
-                data:infracaomotChart,
-                backgroundColor:['lightblue',
-                        'lightgreen',
-                        'yellow',
-                        'gray',
-                        'orange',
-                        'purple',
-                        'red',
-                        'pink']
-            }]
-        }
-    });
-    var myChart = new Chart(ctx1, {
-        type: 'bar',
-        options: {
-                scales: {
-                    xAxes: [{
-                        ticks: {
-                            fontSize: 10
-                        }
-                        }]
-                    }
-                },
-        data:{
-            labels:basechart,
-            datasets:[{
-                label:'Base Vinculo',
-                data:ifnracaoBaseChart,
-                backgroundColor:['lightblue',
-                        'lightgreen',
-                        'yellow',
-                        'gray',
-                        'orange',
-                        'purple',
-                        'red',
-                        'pink']
-            }]
-        }
-    });
-    // var myChart = new Chart(ctx, {
-    //     type: 'bar',
-    //     data:{
-    //         labels:'Rodonaves Matriz',
-    //         datasets:[{
-    //             label:'Base Vinculo',
-    //             data:[matriz]
-    //         }]
-    //     }
-    // });
-});
+        $(document).ready(function () {
 
-</script>
+        var myChart3 = new Chart(ctx3, {
+                type: 'line',
+                options: {
+                        scales: {
+                            xAxes: [{
+                                ticks: {
+                                    fontSize: 8
+                                }
+                                }]
+                            }
+                        },
+                data:{
+                    labels:motoristaChart,
+                    datasets:[{
+                        label:'Motorista x Infracao',
+                        data:infracaomotChart,
+                          pointBackgroundColor:['lightblue',
+                                'lightgreen',
+                                'yellow',
+                                'gray',
+                                'orange',
+                                'purple',
+                                'red',
+                                'pink']
+                    }]
+                }
+            });
+            var myChart2 = new Chart(ctx2, {
+                type: 'bar',
+                options: {
+                        scales: {
+                            xAxes: [{
+                                ticks: {
+                                    fontSize: 10
+                                }
+                                }]
+                            }
+                        },
+                data:{
+                    labels:motoristaChart,
+                    datasets:[{
+                        label:'Analitico Motorista',
+                        data:infracaomotChart,
+                        backgroundColor:['lightblue',
+                                'lightgreen',
+                                'yellow',
+                                'gray',
+                                'orange',
+                                'purple',
+                                'red',
+                                'pink']
+                    }]
+                }
+            });
+            var myChart1 = new Chart(ctx1, {
+                type: 'bar',
+                options: {
+                        scales: {
+                            xAxes: [{
+                                ticks: {
+                                    fontSize: 10
+                                }
+                                }]
+                            }
+                        },
+                data:{
+                    labels:basechart,
+                    datasets:[{
+                        label:'Base Vinculo',
+                        data:ifnracaoBaseChart,
+                        backgroundColor:['lightblue',
+                                'lightgreen',
+                                'yellow',
+                                'gray',
+                                'orange',
+                                'purple',
+                                'red',
+                                'pink']
+                    }]
+                }
+            });
+
+        let table2 = $('#table2').DataTable();
+        let table = $('#table1').DataTable();
+
+        table.on( 'search.dt', function () {
+            let coluns = table.columns({ filter : 'applied'}).data();
+            let baseVinculoFilter = coluns[0];
+            let countFilter = coluns[1];
+            let baseVinculoFilterLoop = [];
+            let countFilterLoop = [];
+            for ( i = 0; i < 8 ; i++){
+                baseVinculoFilterLoop.push(baseVinculoFilter[i]);
+                countFilterLoop.push(countFilter[i]);
+                
+            };
+            myChart1.destroy();
+            myChart1 = new Chart(ctx1, {
+                type: 'bar',
+                options: {
+                        scales: {
+                            xAxes: [{
+                                ticks: {
+                                    fontSize: 10
+                                }
+                                }]
+                            }
+                        },
+                data:{
+                    labels:baseVinculoFilterLoop,
+                    datasets:[{
+                        label:'Base Vinculo',
+                        data:countFilterLoop,
+                        backgroundColor:['lightblue',
+                                'lightgreen',
+                                'yellow',
+                                'gray',
+                                'orange',
+                                'purple',
+                                'red',
+                                'pink']
+                    }]
+                }
+            });
+        });
+
+        table2.on( 'search.dt', function () {
+            let i;
+            let coluns = table2.columns({ filter : 'applied'}).data();
+            let motoristaFilter = coluns[0];
+            let infracaoFilter = coluns[1];
+            let infracaoFilterLoop = [];
+            let motoristaFilterLoop = [];
+            for ( i = 0; i < 8 ; i++){
+                motoristaFilterLoop.push(motoristaFilter[i]);
+                infracaoFilterLoop.push(infracaoFilter[i]);
+                
+            };
+ 
+
+            myChart3.destroy();
+           
+            myChart3 = new Chart(ctx3, {
+                type: 'line',
+                options: {
+                        scales: {
+                            xAxes: [{
+                                ticks: {
+                                    fontSize: 6
+                                }
+                                }]
+                            }
+                        },
+                data:{
+                    labels:motoristaFilterLoop,
+                    datasets:[{
+                        label:'Motorista x Infracao',
+                        data:infracaoFilterLoop,
+                          pointBackgroundColor:['lightblue',
+                                'lightgreen',
+                                'yellow',
+                                'gray',
+                                'orange',
+                                'purple',
+                                'red',
+                                'pink']
+                    }]
+                }
+            });
+
+            myChart2.destroy();
+            myChart2 = new Chart(ctx2, {
+                type: 'bar',
+                options: {
+                        scales: {
+                            xAxes: [{
+                                ticks: {
+                                    fontSize: 6
+                                }
+                                }]
+                            }
+                        },
+                data:{
+                    labels:motoristaFilterLoop,
+                    datasets:[{
+                        label:'Analitico Motorista',
+                        data:infracaoFilterLoop,
+                        backgroundColor:['lightblue',
+                                'lightgreen',
+                                'yellow',
+                                'gray',
+                                'orange',
+                                'purple',
+                                'red',
+                                'pink']
+                    }]
+                }
+            });
+        });
+    });
+    </script>
+    @stop
 @stop

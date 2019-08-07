@@ -5,19 +5,29 @@
 @section('content_header')
     <h1 style="text-align:center">Gridview de consumo por placa</h1>
 @stop
+<style>
+    #data-table th{
+        text-align: center !important;
+    }
+     td {
+         border: 1px solid black;
+        text-align: center !important;
+        font-size: 13px;
+    }
+</style>
 @section('content')
 <div class="col-md-12">
-    <div class="table-responsive" style="max-height:1080px">
+    <div class="table-responsive" style="max-height:800px">
         <table id = 'data-table' class="display compact" style="width:100%">
             <thead style="text-align:center">
             <tr>
                 <th> NOME </th>
                 <th> PLACA </th>
-                <th> INICIO	</th>
+                <th> INICIO	HODOMETRO</th>
                 <th> FIM HODOMETRO_INI </th>
-                <th> KM_Rodado </th>
-                <th> DISTANCIA </th>
-                <th> FAIXA_VERDE % </th>
+                <th> KM_Rodado(km)</th>
+                <th> DISTANCIA(metros) </th>
+                <th> FAIXA_VERDE(%) </th>
                 <th> PARADA COM O MOTOR LIGADO (hh:mm:ss)</th>
                 <th> MOTOR_LIGADO </th>
                 <th> CONSUMO TOTAL </th>

@@ -11,6 +11,7 @@ use DB;
 use App\Models\RelatorioTrecho;
 use Illuminate\Support\Facades\Route;
 use yajra\Datatables\Datatables;
+use App\Models\bcFrota;
 
 class PlacaController extends Controller
 {
@@ -71,21 +72,24 @@ class PlacaController extends Controller
             sum(cast(consumo as float))/NULLIF(sum(cast(distancia as float)),0) AS mediaTot'))
         ->orderBy('mediaTot')
         ->get();
-
-        $frotasSelect = DB::table('bcFrota as a')
+        $frotasSelect = DB::table('bcFrota as a') 
         ->select('a.frota')
         ->rightJoin('relatorio_trechos as b','a.placa_atual','=','b.veiculo')
-        //->where('sum(cast(b.consumo)as float)','>','1')
         ->groupBy('a.frota')
         ->get();
 
-        $frotaArray = json_decode(json_encode($frotasSelect), true);
+        $frotaArray = $frotasSelect->pluck('frota')->all();
+
+        //var_dump($frotaArray);die();
+        // $frotaArray = $frotasSelect->pluck('frota');
+        // $plucked = $frotaArray->all();
+        // var_dump($plucked);die();
 
         if(isset($_GET['val'])){
             $startVal = $_GET['val'];
         }
         else{
-            $startVal = $frotaArray[0]['frota'];
+            $startVal = $frotaArray[0];
         }
 
         $consumoMedia = db::select("select a.veiculo
@@ -121,7 +125,7 @@ class PlacaController extends Controller
         return view ('placas.home.dashboard',[
             'consumo'=>json_decode($consumo),
             'totalConsumos'=>json_decode($totalConsumos),
-            'frotas' => json_decode(json_encode($frotasSelect), true),
+            'frotas' =>  $frotaArray,
             'consumoMedia' => $consumoMedia,
         ]);
     }

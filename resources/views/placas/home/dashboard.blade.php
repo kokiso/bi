@@ -60,28 +60,6 @@ for($k=0; $k < count($consumo); $k++){
             </table>
         </div>
     </div>
-    {{-- <div class="col-md-12">
-        <div class="table-responsive" style="max-height:220px">
-            <table class="table">
-                <thead>
-                <tr>
-                    <th></th>
-                    <th>Total km rodado</th>
-                    <th>Total media por litros</th>
-                </tr>
-                </thead>
-                <tbody>
-                @for($j=0; $j<count($totalConsumos); $j++)
-                <tr>
-                    <td>Total Resultado</td>
-                    <td>{{(float)$totalConsumos[$j]->total_km}}</td>
-                    <td>{{number_format((float)($totalConsumos[$j]->mediaTot),2,'.','')}}</td>
-                </tr>
-                @endfor
-                </tbody>
-            </table>
-        </div>
-    </div> --}}
     <div class="col-md-12">
             <canvas id="consumoChart"style="border-style:solid">></canvas>
     </div>
@@ -92,37 +70,32 @@ for($k=0; $k < count($consumo); $k++){
         max-width: 100%;
     } */
 </style>
+@section('js')
 <script>
-    $(function () {
     let placa = <?php echo json_encode($placa)?>;
     let kmtotal = <?php echo json_encode($kmtotal)?>;
     var ctx = document.getElementById("consumoChart").getContext('2d');
+    $(document).ready(function () {
 
-    var myChart = new Chart(ctx, {
-                type: 'line',
-                data:{
-                    labels:placa,
-                    datasets:[{
-                        label:'Frota x Kilometros Rodados',
-                        data:kmtotal,
-                          pointBackgroundColor:['lightblue',
-                        'lightgreen',
-                        'yellow',
-                        'gray',
-                        'orange',
-                        'purple',
-                        'red',
-                        'pink']
-                    }]
-                }
-            });
+     var myChart = new Chart(ctx, {
+            type: 'line',
+            data:{
+                labels:placa,
+                datasets:[{
+                    label:'Frota x Kilometros Rodados',
+                    data:kmtotal,
+                      pointBackgroundColor:['lightblue',
+                    'lightgreen',
+                    'yellow',
+                    'gray',
+                    'orange',
+                    'purple',
+                    'red',
+                    'pink']
+                }]
+            }
         });
 
-</script>
-@section('js')
-<script>
-    $(document).ready(function () {
-        // $("#selectName").children().remove("optgroup");
         $('.data-table thead tr').clone(true).appendTo( '.data-table thead' );
         $('.data-table thead tr:eq(1) th').each( function (i) {
             var title = $(this).text();
@@ -137,20 +110,43 @@ for($k=0; $k < count($consumo); $k++){
                 }
             } );
         } );
-        let table = $('.data-table').DataTable(
+        var table = $('.data-table').DataTable(
         {   "pageLength": 5,
             "orderCellsTop": true,
             "fixedHeader": true,
             "columnDefs": [
                 { "width": "15%", "targets": 0 }
             ]
-        }
-    );
+        });
+
+        table.on( 'search.dt', function () {
+            let coluns = table.columns({ filter : 'applied'}).data();
+            let frotaFilter = coluns[0];
+            let kmTotalFilter = coluns[5];
+            myChart.destroy();
+            myChart = new Chart(ctx, {
+                type: 'line',
+                data:{
+                    labels:frotaFilter,
+                    datasets:[{
+                        label:'Frota x Kilometros Rodados',
+                        data:kmTotalFilter,
+                          pointBackgroundColor:['lightblue',
+                        'lightgreen',
+                        'yellow',
+                        'gray',
+                        'orange',
+                        'purple',
+                        'red',
+                        'pink']
+                    }]
+                }
+            });
+        } );
     });
 
     $( "#selectName" ).change(function(e) {
         let val = $("#selectName option:selected").text();
-        console.log(Number(val));
         $.ajax({
             headers: {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')

@@ -149,8 +149,6 @@ var ctx3 = document.getElementById("placaChart").getContext('2d');
         let coluns = table.columns({ filter : 'applied'}).data();
         let motoristaFilter = coluns[0];
         let mediaKmLitro = coluns[1];
-        console.log(motorista);
-        //var ctx = document.getElementById("motoristaChart").getContext('2d');
         myChart.destroy();
         myChart = new Chart(ctx, {
             type: 'line',
@@ -176,8 +174,6 @@ var ctx3 = document.getElementById("placaChart").getContext('2d');
         let coluns = table2.columns({ filter : 'applied'}).data();
         let placaFilter = coluns[0];
         let mediaKmLitro = coluns[1];
-        console.log(motorista);
-        //var ctx = document.getElementById("motoristaChart").getContext('2d');
         myChart2.destroy();
         myChart2 = new Chart(ctx3, {
             type: 'line',

@@ -101,65 +101,13 @@
     <h3 style="text-align:center">Infracao por Motorista</h3>
     <canvas id="InfracaoChart">></canvas>
 </div>
-@section('js')
-<script>
-           $(document).ready(function () {
 
-$('.data-table thead tr').clone(true).appendTo( '.data-table thead' );
-$('.data-table thead tr:eq(1) th').each( function (i) {
-    var title = $(this).text();
-    $(this).html( '<input type="text"/ style = "width: 100px">' );
-
-    $( 'input', this ).on( 'keyup change', function () {
-        if ( ref_table.column(i).search() !== this.value ) {
-            ref_table
-                .column(i)
-                .search( this.value )
-                .draw();
-        }
-    } );
-} );
-let ref_table = $('.data-table').DataTable(
-{   "pageLength": 5,
-    "orderCellsTop": true,
-    "fixedHeader": true,
-    "columnDefs": [
-        { "width": "5%", "targets": 0 }
-    ]
-}
-);
-var search = $(
-            '<div class="ref_field">'+
-                '<div class="ref_label"> <h3 style="text-align:center">Filtro por Base Vinculo:</h3></div>'+
-                '<div class="ref_input"></div>'+
-            '</div>'
-        ).appendTo( 'div.ref_search' );
-
-        ref_table.column(1).data().unique().each( function (item, i) {
-            var input = search.find('div.ref_input');
-
-            input.append(
-                $('<button class="btn btn-info btn-flat" style="color:black;font-weight:bolder">'+item+'</a>')
-                    .on( 'click', function () {
-                        $(this).toggleClass('active');
-
-                        var items = input.find('.active').map( function () {
-                            return $(this).text();
-                        } ).toArray().join('|');
-
-                        ref_table.column(1).search( items, true, false ).draw();
-                    } )
-            );
-        } );
-});
-</script>
-@stop
 <script>
 var currentChart;
 var dataMap;
 var ctx3 = document.getElementById("tempoParadoChart").getContext('2d');
 var ctx2 = document.getElementById("InfracaoChart").getContext('2d');
-       $(document).ready(function () {
+   $(document).ready(function () {
 
 			var total = new Array();
             var i = 0;
@@ -375,8 +323,193 @@ var ctx2 = document.getElementById("InfracaoChart").getContext('2d');
 
                 }
             });
+        $('.data-table thead tr').clone(true).appendTo( '.data-table thead' );
+        $('.data-table thead tr:eq(1) th').each( function (i) {
+            var title = $(this).text();
+            $(this).html( '<input type="text"/ style = "width: 100px">' );
 
+            $( 'input', this ).on( 'keyup change', function () {
+                if ( ref_table.column(i).search() !== this.value ) {
+                    ref_table
+                        .column(i)
+                        .search( this.value )
+                        .draw();
+                }
+            } );
         });
+        var ref_table = $('.data-table').DataTable(
+        {   "pageLength": 5,
+            "orderCellsTop": true,
+            "fixedHeader": true,
+            "columnDefs": [
+                { "width": "5%", "targets": 0 }
+            ]
+        });
+
+        var search = $(
+                '<div class="ref_field">'+
+                    '<div class="ref_label"> <h3 style="text-align:center">Filtro por Base Vinculo:</h3></div>'+
+                    '<div class="ref_input"></div>'+
+                '</div>'
+        ).appendTo( 'div.ref_search' );
+
+        ref_table.column(1).data().unique().each( function (item, i) {
+            var input = search.find('div.ref_input');
+
+            input.append(
+                $('<button class="btn btn-info btn-flat" style="color:black;font-weight:bolder">'+item+'</a>')
+                    .on( 'click', function () {
+                        $(this).toggleClass('active');
+
+                        var items = input.find('.active').map( function () {
+                            return $(this).text();
+                        } ).toArray().join('|');
+
+                        ref_table.column(1).search( items, true, false ).draw();
+                    } )
+            );
+        });
+
+        ref_table.on( 'search.dt', function () {
+            let coluns = ref_table.columns({ filter : 'applied'}).data();
+            let rotuloFilter = coluns[0];
+            let tempoParadoFilter = coluns[2];
+            let marchaLentaFilter = coluns[3];
+            let excessoVelocFilter = coluns[4];
+            let rotFilter = coluns[5];
+
+            var determineChartFiltered = $("#chartType").val();
+            let rotuloFilterLoop = [];
+
+            let tempoParadoFilterLoop = [];
+            let marchaLentaFilterLoop = [];
+            let excessoVelocFilterLoop = [];
+            let rotFilterLoop = [];
+
+            for ( i = 0; i < 12 ; i++){
+                rotuloFilterLoop.push(rotuloFilter[i]);
+                tempoParadoFilterLoop.push(tempoParadoFilter[i]);
+                marchaLentaFilterLoop.push(marchaLentaFilter[i]);
+                excessoVelocFilterLoop.push(excessoVelocFilter[i]);
+                rotFilterLoop.push(rotFilter[i]);
+                
+            };
+            if(determineChartFiltered === "1")
+                pieChartFiltered = tempoParadoFilterLoop
+            else if(determineChartFiltered === "2")
+                pieChartFiltered = marchaLentaFilterLoop
+            else if(determineChartFiltered === "3")
+                pieChartFiltered = marchaLentaFilterLoop
+            else if(determineChartFiltered === "4")
+                pieChartFiltered = rotFilterLoop
+
+            currentChart.destroy();
+            currentChart = new Chart(ctx3, {
+                type: 'pie',
+                data:{
+                    labels:rotuloFilterLoop,
+                    datasets:[{
+                        label:'Tempo Parado',
+                        data: pieChartFiltered,
+                        backgroundColor:['lightblue',
+                            'lightgreen',
+                            'yellow',
+                            'gray',
+                            'orange',
+                            'purple',
+                            'red',
+                            'pink',
+                            'rgba(255, 99, 132, 0.2)',
+                            'rgba(54, 162, 235, 0.2)',
+                            'rgba(255, 206, 86, 0.2)',
+                            'rgba(75, 192, 192, 0.2)',
+                            'rgba(153, 102, 255, 0.2)'
+                        ]
+                    }]
+                }
+            });
+            
+            myChart.destroy();
+            myChart = new Chart(ctx2, {
+                type: 'bar',
+                data:{
+                    labels:rotuloFilterLoop,
+                    datasets:[
+                    {
+                        label: "Tempo Parado",
+                        backgroundColor: "pink",
+                        borderColor: "red",
+                        borderWidth: 1,
+                        data:tempoParadoFilterLoop,
+                        fillColor: "#79D1CF",
+                        strokeColor: "#79D1CF",
+                    },
+                    {
+                        label: "Tempo de Marcha Lenta Excessivo",
+                        backgroundColor: "lightblue",
+                        borderColor: "blue",
+                        borderWidth: 1,
+                        data:marchaLentaFilterLoop
+                    },
+                    {
+                        label: "Excesso  Velocidade Seco    ",
+                        backgroundColor: "lightgreen",
+                        borderColor: "green",
+                        borderWidth: 1,
+                        data:excessoVelocFilter
+                    },
+                    {
+                        label: "Excesso de rotacao",
+                        backgroundColor: "yellow",
+                        borderColor: "orange",
+                        borderWidth: 1,
+                        data:rotFilterLoop
+                    }
+                ]
+                },
+                showTooltips: false,
+                options: {
+                    cales: {
+                            xAxes: [{
+                                ticks: {
+                                    fontSize: 6
+                                }
+                                }]
+                            },
+                    "hover": {
+                        "animationDuration": 0
+                    },
+                    "animation": {
+                        "duration": 0,
+                                    "onComplete": function () {
+                                        var chartInstance = this.chart,
+                                            ctx = chartInstance.ctx;
+
+                                        ctx.font = Chart.helpers.fontString(Chart.defaults.global.defaultFontSize, Chart.defaults.global.defaultFontStyle, Chart.defaults.global.defaultFontFamily);
+                                        ctx.textAlign = 'center';
+                                        ctx.textBaseline = 'bottom';
+
+                                        this.data.datasets.forEach(function (dataset, i) {
+                                            var meta = chartInstance.controller.getDatasetMeta(i);
+                                            meta.data.forEach(function (bar, index) {
+                                                var data = dataset.data[index];
+                                                ctx.fillText(data, bar._model.x, bar._model.y - 5);
+                                            });
+                                        });
+                                    }
+                    },
+
+                    tooltips: {
+                        "enabled": false
+                    },
+                    legend: {
+                        "display": false
+                    }
+
+                }
+        });
+     });                   
+    });
   function updateChart() {
     if(typeof currentChart != "undefined"){
     	currentChart.destroy();

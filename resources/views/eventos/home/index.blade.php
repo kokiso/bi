@@ -6,13 +6,17 @@
     <h1 style="text-align:center">Gridview de Eventos/Infrações</h1>
 @stop
 <style>
-        td{
-            max-width:auto;
-        }
+    #data-table th{
+        text-align: center !important;
+    }
+     td {
+         border: 1px solid black;
+        text-align: center !important;
+        font-size: 13px;
 </style>
 @section('content')
 <div class="col-md-12">
-    <div class="table-responsive" style="max-height:1080px">
+    <div class="table-responsive" style="max-height:800px">
         <table id = 'data-table' class="display compact" style="width:100%">
             <thead class>
             <tr>
