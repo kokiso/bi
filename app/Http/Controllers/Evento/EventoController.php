@@ -8,6 +8,9 @@ use App\Exports\RelatorioEventosExport;
 use App\Imports\RelatorioEventosImport;
 use Maatwebsite\Excel\Facades\Excel;
 use DB;
+use App\Models\RelatorioEventos;
+use Illuminate\Support\Facades\Route;
+use yajra\Datatables\Datatables;
 
 class EventoController extends Controller
 {
@@ -17,14 +20,10 @@ class EventoController extends Controller
     }
 
     public function index(){
-        $gridview = DB::table('relatorio_eventos')
-        ->select(DB::RAW('DATA,HORA,FILIAL,VEICULO,GRUPO_MOTORISTA
-        ,MOTORISTA,PEDAL_ACIONADO,TIPO_EVENTO,DESCRICAO_EVENTO,NOME_CERCA
-        ,VELOCIDADE,HODOMETRO,DURACAO'))
-        ->get();
-        return view ('eventos.home.index',[
-            'gridview'=>$gridview
-        ]);
+        if(request()->ajax()){
+            return DataTables::of(RelatorioEventos::all())->make();
+        }
+        return view ('eventos.home.index');
     }
 
     public function importview(){

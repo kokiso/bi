@@ -1,4 +1,4 @@
-<meta name="csrf-token" content="{{ csrf_token() }}">
+ <meta name="csrf-token" content="{{ csrf_token() }}">
 @extends('adminlte::page')
 
 @section('title', 'AdminLTE')
@@ -19,6 +19,13 @@ for($k=0; $k < count($consumo); $k++){
 <div class="row">
     <div class="col-md-4">
                 {{Form::label('veiculoMedio', 'Escolha a Frota')}}
+                {{-- <select class="form-control" name="selectName" id = "selectName">
+                    @for($l=0; $l<count($frotas); $l++)
+                      <option value="{{$frotas[$l]->frota}}">
+                          {{$frotas[$l]->frota}}
+                      </option>
+                    @endfor
+                  </select> --}}
                 {{Form::select('selectName', $frotas, null,['class'=>'form-control','id'=>'selectName'])}}
     </div>
     <div id="container">
@@ -53,7 +60,7 @@ for($k=0; $k < count($consumo); $k++){
             </table>
         </div>
     </div>
-    <div class="col-md-12">
+    {{-- <div class="col-md-12">
         <div class="table-responsive" style="max-height:220px">
             <table class="table">
                 <thead>
@@ -74,7 +81,7 @@ for($k=0; $k < count($consumo); $k++){
                 </tbody>
             </table>
         </div>
-    </div>
+    </div> --}}
     <div class="col-md-12">
             <canvas id="consumoChart"style="border-style:solid">></canvas>
     </div>
@@ -115,7 +122,7 @@ for($k=0; $k < count($consumo); $k++){
 @section('js')
 <script>
     $(document).ready(function () {
-
+        // $("#selectName").children().remove("optgroup");
         $('.data-table thead tr').clone(true).appendTo( '.data-table thead' );
         $('.data-table thead tr:eq(1) th').each( function (i) {
             var title = $(this).text();
@@ -143,6 +150,7 @@ for($k=0; $k < count($consumo); $k++){
 
     $( "#selectName" ).change(function(e) {
         let val = $("#selectName option:selected").text();
+        console.log(Number(val));
         $.ajax({
             headers: {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -152,7 +160,6 @@ for($k=0; $k < count($consumo); $k++){
             url: "dashboard",
             data: 'val='+val,
             success: function(data){
-                console.log(data);
                 document.getElementById('container').innerHTML = "";
                 document.getElementById('container').innerHTML= data;
             },

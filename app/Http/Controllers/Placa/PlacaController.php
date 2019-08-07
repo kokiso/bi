@@ -8,6 +8,9 @@ use App\Exports\RelatorioTrechoExport;
 use App\Imports\RelatorioTrechoImport;
 use Maatwebsite\Excel\Facades\Excel;
 use DB;
+use App\Models\RelatorioTrecho;
+use Illuminate\Support\Facades\Route;
+use yajra\Datatables\Datatables;
 
 class PlacaController extends Controller
 {
@@ -17,28 +20,30 @@ class PlacaController extends Controller
     }
 
     public function index(){
-        $gridConsumo = DB::table('relatorio_trechos')
-                        ->select(DB::raw("motorista
-                        ,veiculo
-                        ,motor_ligado  as INICIO
-                        ,veiculo_desligado  AS FIM
-                        ,hodometro
-                        ,distancia
-                        ,faixa_verde
-                        ,parada_motor_ligado
-                        ,tempo_motor_ligado
-                        ,consumo
-                        ,rendimento
-                        ,CASE WHEN cast(consumo as float) <2 THEN 1 ELSE 0 end as media_abaixo_2
-                        ,CASE WHEN (cast(consumo as float) >= 2) and (cast(consumo as float)<=2.9) THEN 1 ELSE 0 end as media_de_2a29
-                        ,CASE WHEN cast(consumo as float)>2.9 THEN 1 ELSE 0 end as media_acima_2
-                        ,CASE WHEN cast(faixa_verde as float)<5 THEN 1 ELSE 0 end as faixa_verde_abaixo5
-                        ,CASE WHEN cast(faixa_verde as float)<2 THEN 1 ELSE 0 end as faixa_verde_abaixo2
-                        ,CASE WHEN cast(faixa_verde as float)>5 THEN 1 ELSE 0 end as faixa_verde_acima5
-                        "))->get();
-        return view ('placas.home.index',[
-            'gridconsumo' => json_decode($gridConsumo)
-        ]);
+        if(request()->ajax()){
+            $gridConsumo = DB::table('relatorio_trechos')
+            ->select(DB::raw("
+            motorista
+            ,veiculo
+            ,motor_ligado  as INICIO
+            ,veiculo_desligado  AS FIM
+            ,hodometro
+            ,distancia
+            ,faixa_verde
+            ,parada_motor_ligado
+            ,tempo_motor_ligado
+            ,consumo
+            ,rendimento
+            ,CASE WHEN cast(consumo as float) <2 THEN 1 ELSE 0 end as media_abaixo_2
+            ,CASE WHEN (cast(consumo as float) >= 2) and (cast(consumo as float)<=2.9) THEN 1 ELSE 0 end as media_de_2a29
+            ,CASE WHEN cast(consumo as float)>2.9 THEN 1 ELSE 0 end as media_acima_2
+            ,CASE WHEN cast(faixa_verde as float)<10 THEN 1 ELSE 0 end as faixa_verde_abaixo10
+            ,CASE WHEN cast(faixa_verde as float)>10 and cast(faixa_verde as float) < 20 THEN 1 ELSE 0 end as faixa_verde_abaixo20
+            ,CASE WHEN cast(faixa_verde as float)>20 and cast(faixa_verde as float) < 50 THEN 1 ELSE 0 end as faixa_verde_acima50
+            "))->get();
+            return DataTables::of($gridConsumo)->make();
+        }
+        return view ('placas.home.index');
     }
 
     public function importview(){
@@ -55,6 +60,7 @@ class PlacaController extends Controller
                 sum(cast(consumo as float))/NULLIF(sum(cast(distancia as float)),0) AS mediaTot"))
         ->leftJoin('bcFrota AS b','b.placa_atual','=','a.veiculo')
         ->where('veiculo','<>','')
+        ->where('distancia','<>','0')
         ->groupBy('b.frota','a.motorista','b.modelo','b.ano_modelo')
         ->orderBy('mediaTot')
         ->get();
@@ -69,10 +75,12 @@ class PlacaController extends Controller
         $frotasSelect = DB::table('bcFrota as a')
         ->select('a.frota')
         ->rightJoin('relatorio_trechos as b','a.placa_atual','=','b.veiculo')
+        //->where('sum(cast(b.consumo)as float)','>','1')
         ->groupBy('a.frota')
         ->get();
 
         $frotaArray = json_decode(json_encode($frotasSelect), true);
+
         if(isset($_GET['val'])){
             $startVal = $_GET['val'];
         }

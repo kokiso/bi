@@ -130,7 +130,7 @@ return [
                             'icon' => 'dashboard',
                         ],
                         [
-                            'text' => 'Gridview de consumo',
+                            'text' => 'Gridview de Eventos',
                             'url'  => 'evento',
                             'icon' => 'table',
                         ],

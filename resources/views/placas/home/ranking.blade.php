@@ -50,7 +50,7 @@ for($i=0; $i<count($rankingPorMotorista); $i++){
 </div>
 
 <div class="row">
-    <h3 style="text-align:center">Ranking Motoristas Infratores Consumo</h3>
+    <h3 style="text-align:center">Ranking Placas Infratores Consumo</h3>
     <div class="col-md-6">
             <div class="table-responsive table-bordered" style="max-height:220px">
             <table class="data-table2 ">
@@ -76,23 +76,23 @@ for($i=0; $i<count($rankingPorMotorista); $i++){
             <canvas id="placaChart"style="border-style:solid"></canvas>
     </div>
 </div>
+@section('js')
 <script>
-        $(function () {
+let motorista = <?php echo json_encode($motoristaJson)?>;
+motorista.push('Total resultado');
+let media_consumoMotorista = <?php echo json_encode($media_consumoMotorista)?>;
+media_consumoMotorista.push(<?php echo $totalRanking ?>);
 
-            let motorista = <?php echo json_encode($motoristaJson)?>;
-            motorista.push('Total resultado');
-            let media_consumoMotorista = <?php echo json_encode($media_consumoMotorista)?>;
-            media_consumoMotorista.push(<?php echo $totalRanking ?>);
+let placa = <?php echo json_encode($veiculoJson)?>;
+placa.push('Total resultado');
+let media_consumoPlaca = <?php echo json_encode($media_consumoPlaca)?>;
+media_consumoPlaca.push(<?php echo $totalRanking ?>);
 
-            let placa = <?php echo json_encode($veiculoJson)?>;
-            placa.push('Total resultado');
-            let media_consumoPlaca = <?php echo json_encode($media_consumoPlaca)?>;
-            media_consumoPlaca.push(<?php echo $totalRanking ?>);
+var ctx = document.getElementById("motoristaChart").getContext('2d');
+var ctx3 = document.getElementById("placaChart").getContext('2d');
+    $(document).ready(function () {
 
-            var ctx = document.getElementById("motoristaChart").getContext('2d');
-            var ctx3 = document.getElementById("placaChart").getContext('2d');
-
-            var myChart = new Chart(ctx, {
+        var myChart = new Chart(ctx, {
                 type: 'line',
                 data:{
                     labels:motorista,
@@ -111,7 +111,7 @@ for($i=0; $i<count($rankingPorMotorista); $i++){
                 }
             });
 
-            var myChart = new Chart(ctx3, {
+            var myChart2 = new Chart(ctx3, {
                 type: 'line',
                 data:{
                     labels:placa,
@@ -129,28 +129,76 @@ for($i=0; $i<count($rankingPorMotorista); $i++){
                     }]
                 }
             });
-        });
 
-</script>
-@section('js')
-<script>
-    $(document).ready(function () {
-        $('.data-table').dataTable(
+        let table = $('.data-table').DataTable(
         {   "pageLength": 5,
             "columnDefs": [
                 { "width": "70%", "targets": 0 }
             ]
         }
     );
-    });
-    $(document).ready(function () {
-        $('.data-table2').dataTable(
+        let table2 = $('.data-table2').DataTable(
         {   "pageLength": 5,
             "columnDefs": [
                 { "width": "70%", "targets": 0 }
             ]
         }
-    );
+        );
+
+    table.on( 'search.dt', function () {
+        let coluns = table.columns({ filter : 'applied'}).data();
+        let motoristaFilter = coluns[0];
+        let mediaKmLitro = coluns[1];
+        console.log(motorista);
+        //var ctx = document.getElementById("motoristaChart").getContext('2d');
+        myChart.destroy();
+        myChart = new Chart(ctx, {
+            type: 'line',
+            data:{
+                labels:motoristaFilter,
+                datasets:[{
+                    label:'Consumo por motorista',
+                    data:mediaKmLitro,
+                    pointBackgroundColor:['lightblue',
+                    'lightgreen',
+                    'yellow',
+                    'gray',
+                    'orange',
+                    'purple',
+                    'red',
+                    'pink']
+                    }]
+            }
+        });
+    } );
+
+    table2.on( 'search.dt', function () {
+        let coluns = table2.columns({ filter : 'applied'}).data();
+        let placaFilter = coluns[0];
+        let mediaKmLitro = coluns[1];
+        console.log(motorista);
+        //var ctx = document.getElementById("motoristaChart").getContext('2d');
+        myChart2.destroy();
+        myChart2 = new Chart(ctx3, {
+            type: 'line',
+            data:{
+                labels:placaFilter,
+                datasets:[{
+                    label:'Consumo por motorista',
+                    data:mediaKmLitro,
+                    pointBackgroundColor:['lightblue',
+                    'lightgreen',
+                    'yellow',
+                    'gray',
+                    'orange',
+                    'purple',
+                    'red',
+                    'pink']
+                    }]
+            }
+        });
+    } );
+
     });
 </script>
 @stop

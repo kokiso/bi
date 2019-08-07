@@ -306,25 +306,6 @@ var ctx2 = document.getElementById("InfracaoChart").getContext('2d');
 
             var myChart = new Chart(ctx2, {
                 type: 'bar',
-                hover: { animationDuration: 0},
-                options: {
-                    tooltipTemplate: "<%= value %>",
-
-                    showTooltips: true,
-
-                    onAnimationComplete: function()
-                    {
-                        this.showTooltip(this.datasets[0].bars, true);
-                    },
-                    tooltipEvents: [],
-                scales: {
-                    xAxes: [{
-                        ticks: {
-                            fontSize: 10
-                        }
-                        }]
-                    }
-                },
                 data:{
                     labels:motoristaInfracaoChart,
                     datasets:[
@@ -333,7 +314,9 @@ var ctx2 = document.getElementById("InfracaoChart").getContext('2d');
                         backgroundColor: "pink",
                         borderColor: "red",
                         borderWidth: 1,
-                        data:infracaoTempoParadoChart
+                        data:infracaoTempoParadoChart,
+                        fillColor: "#79D1CF",
+                        strokeColor: "#79D1CF",
                     },
                     {
                         label: "Tempo de Marcha Lenta Excessivo",
@@ -357,6 +340,39 @@ var ctx2 = document.getElementById("InfracaoChart").getContext('2d');
                         data:infracaoRotacaoChart
                     }
                 ]
+                },
+                showTooltips: false,
+                options: {
+                    "hover": {
+                        "animationDuration": 0
+                    },
+                    "animation": {
+                        "duration": 0,
+                                    "onComplete": function () {
+                                        var chartInstance = this.chart,
+                                            ctx = chartInstance.ctx;
+
+                                        ctx.font = Chart.helpers.fontString(Chart.defaults.global.defaultFontSize, Chart.defaults.global.defaultFontStyle, Chart.defaults.global.defaultFontFamily);
+                                        ctx.textAlign = 'center';
+                                        ctx.textBaseline = 'bottom';
+
+                                        this.data.datasets.forEach(function (dataset, i) {
+                                            var meta = chartInstance.controller.getDatasetMeta(i);
+                                            meta.data.forEach(function (bar, index) {
+                                                var data = dataset.data[index];
+                                                ctx.fillText(data, bar._model.x, bar._model.y - 5);
+                                            });
+                                        });
+                                    }
+                    },
+
+                    tooltips: {
+                        "enabled": false
+                    },
+                    legend: {
+                        "display": false
+                    }
+
                 }
             });
 

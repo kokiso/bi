@@ -13,13 +13,13 @@
                 <thead style="background-color:green">
                         <tr style="text-align:center;font-size:12px">
                             <th></th>
-                            <th>Produtividade Faixa Verde</th>
+                            <th>Produtividade de Consumo</th>
                             <th></th>
                             <th></th>
                             <th>Total</th>
                             <th></th>
                             <th></th>
-                            <th>Ranging</th>
+                            <th>Ranking</th>
                             <th></th>
                             <th></th>
                             <th>Prod.Consumo</th>
@@ -27,14 +27,14 @@
                         </tr>
                         </thead>
                 <thead>
-                <tr style="font-size:12px;color:white">
-                    <th style="background-color:blue">Placa</th>
-                    <th style="background-color:blue">Frota</th>
-                    <th style="background-color:blue">Avaliadas</th>
-                    <th style="background-color:blue">Media Ideal</th>
-                    <th style="background-color:blue">Media Real</th>
-                    <th style="background-color:blue">Fora da Media</th>
-                    <th style="background-color:red">Media Abaixo de 2KM/L</th>
+                <tr style="font-size:12px;color:black">
+                    <th style="background-color:#5f5ff1">Placa</th>
+                    <th style="background-color:#5f5ff1">Frota</th>
+                    <th style="background-color:#5f5ff1">Avaliadas</th>
+                    <th style="background-color:#5f5ff1">Media Ideal</th>
+                    <th style="background-color:#5f5ff1">Media Real</th>
+                    <th style="background-color:#5f5ff1">Fora da Media</th>
+                    <th style="background-color:#f56161">Media Abaixo de 2KM/L</th>
                     <th style="background-color:yellow">Media de 2 a 2.9KM/L</th>
                     <th style="background-color:green">Media Acima de 2.9KM/L</th>
                     <th style="background-color:orange">Meta</th>
@@ -87,7 +87,7 @@
                                 <th>Total</th>
                                 <th></th>
                                 <th></th>
-                                <th>Ranging</th>
+                                <th>Ranking</th>
                                 <th></th>
                                 <th></th>
                                 <th>Prod.Consumo</th>
@@ -95,14 +95,14 @@
                             </tr>
                             </thead>
                     <thead>
-                    <tr style="font-size:12px;color:white">
-                        <th style="background-color:blue">Placa</th>
-                        <th style="background-color:blue">Frota</th>
-                        <th style="background-color:blue">Avaliadas</th>
-                        <th style="background-color:blue">Faixa Ideal</th>
-                        <th style="background-color:blue">Media de Faixa Verde %</th>
-                        <th style="background-color:blue">Fora de Faixa Verde</th>
-                        <th style="background-color:red">F.V. Abaixo de 10%</th>
+                    <tr style="font-size:12px;color:black">
+                        <th style="background-color:#5f5ff1">Placa</th>
+                        <th style="background-color:#5f5ff1">Frota</th>
+                        <th style="background-color:#5f5ff1">Avaliadas</th>
+                        <th style="background-color:#5f5ff1">Faixa Ideal</th>
+                        <th style="background-color:#5f5ff1">Media de Faixa Verde %</th>
+                        <th style="background-color:#5f5ff1">Fora de Faixa Verde</th>
+                        <th style="background-color:#f56161">F.V. Abaixo de 10%</th>
                         <th style="background-color:yellow">F.V. Abaixo de 20%</th>
                         <th style="background-color:green">F.V. Acima de 50%</th>
                         <th style="background-color:orange">Meta</th>
@@ -117,9 +117,24 @@
                         <td>50</td>
                         <td>{{number_format((float)$consumoMedia[$i]->media_fv_real,2,'.','')}}</td>
                         <td>{{$consumoMedia[$i]->fora_media_fv}}</td>
-                        <td>{{$consumoMedia[$i]->abaixo_10_fv}}</td>
-                        <td>{{$consumoMedia[$i]->entre_10_22_fv}}</td>
-                        <td>{{$consumoMedia[$i]->acima_50_fv}}</td>
+
+                        @if ((int)$consumoMedia[$i]->abaixo_10_fv > (int)$consumoMedia[$i]->entre_10_22_fv && (int)$consumoMedia[$i]->abaixo_10_fv > (int)$consumoMedia[$i]->acima_50_fv)
+                            <td style="backgound-color:#f56161">{{$consumoMedia[$i]->abaixo_10_fv}}</td>
+                        @else
+                            <td>{{$consumoMedia[$i]->abaixo_10_fv}}</td>
+                        @endif
+
+                        @if ((int)$consumoMedia[$i]->entre_10_22_fv > (int)$consumoMedia[$i]->abaixo_10_fv && (int)$consumoMedia[$i]->entre_10_22_fv > (int)$consumoMedia[$i]->acima_50_fv)
+                        <td style="backgound-color:yellow">{{$consumoMedia[$i]->entre_10_22_fv}}</td>
+                        @else
+                            <td>{{$consumoMedia[$i]->entre_10_22_fv}}</td>
+                        @endif
+
+                        @if ((int)$consumoMedia[$i]->acima_50_fv > (int)$consumoMedia[$i]->abaixo_10_fv && (int)$consumoMedia[$i]->acima_50_fv > (int)$consumoMedia[$i]->entre_10_22_fv)
+                        <td style="backgound-color:green">{{$consumoMedia[$i]->acima_50_fv}}</td>
+                        @else
+                            <td>{{$consumoMedia[$i]->acima_50_fv}}</td>
+                        @endif
                         <td>80</td>
                         <td>{{number_format((float)$consumoMedia[$i]->realizado_fv,2,'.','')}}</td>
                         <td>{{number_format((float)$consumoMedia[$i]->farol_fv,2,'.','')}}</td>
