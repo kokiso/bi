@@ -6,8 +6,8 @@
     }
 </style>
 
-<div class="col-md-12"></div>
-<div class="col-md-11">
+<div class="col-sm-12"></div>
+<div class="col-sm-11">
         <div class="table-responsive" style="max-height:300px">
             <table class="table">
                 <thead style="background-color:green">
@@ -90,7 +90,7 @@
             </table>
         </div>
     </div>
-    <div class="col-md-11">
+    <div class="col-sm-11">
             <div class="table-responsive" style="max-height:300px">
                 <table class="table">
                     <thead style="background-color:green">

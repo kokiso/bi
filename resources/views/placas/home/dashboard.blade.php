@@ -9,6 +9,7 @@
 <?php
 for($k=0; $k < count($consumo); $k++){
     $placa[] = $consumo[$k]->frota;
+    $mediaConsumo[] = (float)$consumo[$k]->km_rodado;
     $kmtotal[] = number_format((float)($consumo[$k]->mediaTot),2,'.','');
     if($k == 15){
         break;
@@ -17,7 +18,7 @@ for($k=0; $k < count($consumo); $k++){
 ?>
 @section('content')
 <div class="row">
-    <div class="col-md-4">
+    <div class="col-sm-4">
                 {{Form::label('veiculoMedio', 'Escolha a Frota')}}
                 {{-- <select class="form-control" name="selectName" id = "selectName">
                     @for($l=0; $l<count($frotas); $l++)
@@ -32,7 +33,7 @@ for($k=0; $k < count($consumo); $k++){
         @include('placas.home.external')
     </div>
 
-    <div class="col-md-12">
+    <div class="col-sm-12">
         <div class="table-responsive bordered" style="max-height:450px;background-color:white;border:0.5px">
             <table class="data-table">
                 <thead style="background-color:lightblue">
@@ -60,7 +61,7 @@ for($k=0; $k < count($consumo); $k++){
             </table>
         </div>
     </div>
-    <div class="col-md-12">
+    <div class="col-sm-12">
             <canvas id="consumoChart"style="border-style:solid">></canvas>
     </div>
 </div>
@@ -73,6 +74,7 @@ for($k=0; $k < count($consumo); $k++){
 @section('js')
 <script>
     let placa = <?php echo json_encode($placa)?>;
+    let mediaConsumo = <?php echo json_encode($mediaConsumo)?>;
     let kmtotal = <?php echo json_encode($kmtotal)?>;
     var ctx = document.getElementById("consumoChart").getContext('2d');
     $(document).ready(function () {
@@ -82,7 +84,7 @@ for($k=0; $k < count($consumo); $k++){
             data:{
                 labels:placa,
                 datasets:[{
-                    label:'Frota x Kilometros Rodados',
+                    label:'Frota x Média litros/KM',
                     data:kmtotal,
                       pointBackgroundColor:['lightblue',
                     'lightgreen',
@@ -92,7 +94,18 @@ for($k=0; $k < count($consumo); $k++){
                     'purple',
                     'red',
                     'pink']
-                }]
+                },{
+                        label:'Frota x Kilometros Rodados',
+                        data:mediaConsumo,
+                          pointBackgroundColor:['lightblue',
+                        'lightgreen',
+                        'yellow',
+                        'gray',
+                        'orange',
+                        'purple',
+                        'red',
+                        'pink']
+                    }]
             }
         });
 
@@ -122,15 +135,46 @@ for($k=0; $k < count($consumo); $k++){
         table.on( 'search.dt', function () {
             let coluns = table.columns({ filter : 'applied'}).data();
             let frotaFilter = coluns[0];
-            let kmTotalFilter = coluns[5];
+            let kmTotalFilter = coluns[4];
+            let mediaConsumoFilter = coluns[5];
+
+            let frotaFilterLoop = [];
+            let kmTotalFilterLoop = [];
+            let mediaConsumoFilterLoop = [];
+            for ( i = 0; i < 8 ; i++){
+                frotaFilterLoop.push(frotaFilter[i]);
+                kmTotalFilterLoop.push(kmTotalFilter[i]);
+                mediaConsumoFilterLoop.push(mediaConsumoFilter[i]);
+                
+            };
             myChart.destroy();
             myChart = new Chart(ctx, {
                 type: 'line',
+                options: {
+                        scales: {
+                            xAxes: [{
+                                ticks: {
+                                    fontSize: 8
+                                }
+                                }]
+                            }
+                        },
                 data:{
-                    labels:frotaFilter,
+                    labels:frotaFilterLoop,
                     datasets:[{
+                        label:'Frota x Média litros/KM',
+                        data:mediaConsumoFilterLoop,
+                          pointBackgroundColor:['lightblue',
+                        'lightgreen',
+                        'yellow',
+                        'gray',
+                        'orange',
+                        'purple',
+                        'red',
+                        'pink']
+                    },{
                         label:'Frota x Kilometros Rodados',
-                        data:kmTotalFilter,
+                        data:kmTotalFilterLoop,
                           pointBackgroundColor:['lightblue',
                         'lightgreen',
                         'yellow',

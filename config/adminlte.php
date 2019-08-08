@@ -146,11 +146,7 @@ return [
                     'url'  => '#',
                     'icon' => 'road',
                     'submenu' => [
-                        [
-                            'text' => 'Gridview de consumo',
-                            'url'  => 'placa',
-                            'icon' => 'table',
-                        ],
+                       
                         [
                             'text' => 'Ranking',
                             'url'  => 'placa/ranking',
@@ -161,6 +157,11 @@ return [
                             'text' => 'Dashboard',
                             'url'  => 'placa/dashboard',
                             'icon' => 'dashboard',
+                        ],
+                         [
+                            'text' => 'Gridview de consumo',
+                            'url'  => 'placa',
+                            'icon' => 'table',
                         ],
                         [
                             'text' => 'Importar dados',

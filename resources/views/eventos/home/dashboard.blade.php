@@ -29,7 +29,7 @@
     <h1 style="text-align:center">Eventos</h1>
 @stop
 @section('content')
-<div class="col-md-11" style="margin-left:50px">
+<div class="col-sm-11" style="margin-left:50px">
     <div class="ref_search"></div>
     <div class="table-responsive" style="max-height:600px">
         <table class="table table-bordered table-hover dataTable data-table">
@@ -60,7 +60,7 @@
         </table>
     </div>
 </div>
-<div class="col-md-11" style="margin-left:50px">
+<div class="col-sm-11" style="margin-left:50px">
         <div class="table-responsive" style="max-height:500px">
             <table class="table">
                 <thead class>
@@ -88,7 +88,7 @@
     </div>
 <div>
 
-<div class="col-md-11" style="border-style:solid;margin-left:50px">
+<div class="col-sm-11" style="border-style:solid;margin-left:50px">
     <select id="chartType" class="form-control">
         <option value="1">Tempo Parado</option>
         <option value="2">Marcha Lenta</option>
@@ -97,7 +97,7 @@
     </select>
     <canvas id="tempoParadoChart">></canvas>
 </div>
-<div class="col-md-11" style="border-style:solid;margin-left:50px">
+<div class="col-sm-11" style="border-style:solid;margin-left:50px">
     <h3 style="text-align:center">Infracao por Motorista</h3>
     <canvas id="InfracaoChart">></canvas>
 </div>
@@ -377,7 +377,7 @@ var ctx2 = document.getElementById("InfracaoChart").getContext('2d');
             let marchaLentaFilter = coluns[3];
             let excessoVelocFilter = coluns[4];
             let rotFilter = coluns[5];
-
+            let str
             var determineChartFiltered = $("#chartType").val();
             let rotuloFilterLoop = [];
 
@@ -387,6 +387,8 @@ var ctx2 = document.getElementById("InfracaoChart").getContext('2d');
             let rotFilterLoop = [];
 
             for ( i = 0; i < 12 ; i++){
+                str = String(rotuloFilter[i]);
+                rotuloFilter[i] = str.substring(0, 12);
                 rotuloFilterLoop.push(rotuloFilter[i]);
                 tempoParadoFilterLoop.push(tempoParadoFilter[i]);
                 marchaLentaFilterLoop.push(marchaLentaFilter[i]);
@@ -472,7 +474,7 @@ var ctx2 = document.getElementById("InfracaoChart").getContext('2d');
                     cales: {
                             xAxes: [{
                                 ticks: {
-                                    fontSize: 6
+                                    fontSize: 8
                                 }
                                 }]
                             },

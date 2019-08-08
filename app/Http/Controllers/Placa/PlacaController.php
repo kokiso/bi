@@ -25,7 +25,7 @@ class PlacaController extends Controller
             $gridConsumo = DB::table('relatorio_trechos')
             ->select(DB::raw("
             motorista
-            ,veiculo
+            ,b.frota as veiculo
             ,motor_ligado  as INICIO
             ,veiculo_desligado  AS FIM
             ,hodometro
@@ -41,7 +41,7 @@ class PlacaController extends Controller
             ,CASE WHEN cast(faixa_verde as float)<10 THEN 1 ELSE 0 end as faixa_verde_abaixo10
             ,CASE WHEN cast(faixa_verde as float)>10 and cast(faixa_verde as float) < 20 THEN 1 ELSE 0 end as faixa_verde_abaixo20
             ,CASE WHEN cast(faixa_verde as float)>20 and cast(faixa_verde as float) < 50 THEN 1 ELSE 0 end as faixa_verde_acima50
-            "))->get();
+            "))->leftJoin('bcFrota AS b','b.placa_atual','=','veiculo')->get();
             return DataTables::of($gridConsumo)->make();
         }
         return view ('placas.home.index');
@@ -105,8 +105,7 @@ class PlacaController extends Controller
         ,(SELECT count(consumo) FROM relatorio_trechos WHERE (cast(consumo as float) > 2.9) AND veiculo = a.veiculo)*100 / count(a.veiculo) AS farol
         ,b.modelo AS modelo
         ,sum(CAST(a.faixa_verde AS float)) / count(a.veiculo) AS media_fv_real
-        ,(select count(a.   faixa_verde) from relatorio_trechos a
-        WHERE a.faixa_verde < '50') AS fora_media_fv
+        ,(SELECT count(faixa_verde) FROM relatorio_trechos WHERE (cast(faixa_verde as float ) < 50) AND veiculo = a.veiculo) AS fora_media_fv
         ,(SELECT count(faixa_verde) FROM relatorio_trechos WHERE (cast(faixa_verde as float ) < 10) AND veiculo = a.veiculo) AS abaixo_10_fv
         ,(SELECT count(faixa_verde) FROM relatorio_trechos WHERE (cast(faixa_verde as float) BETWEEN 10 AND 20) and veiculo = a.veiculo) AS entre_10_22_fv
         ,(SELECT count(faixa_verde) FROM relatorio_trechos WHERE (cast(faixa_verde as float) > 50) AND veiculo = a.veiculo) AS acima_50_fv

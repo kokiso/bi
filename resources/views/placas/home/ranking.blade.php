@@ -24,7 +24,7 @@ for($i=0; $i<count($rankingPorMotorista); $i++){
 @section('content')
 <div class="row">
     <h3 style="text-align:center">Ranking Motoristas Infratores Consumo</h3>
-    <div class="col-md-6">
+    <div class="col-sm-6">
         <div class="table-responsive" style="max-height:220px">
             <table class="data-table">
                 <thead>
@@ -44,14 +44,14 @@ for($i=0; $i<count($rankingPorMotorista); $i++){
             </table>
         </div>
     </div>
-    <div class="col-md-6">
+    <div class="col-sm-6">
             <canvas id="motoristaChart"style="border-style:solid">></canvas>
     </div>
 </div>
 
 <div class="row">
     <h3 style="text-align:center">Ranking Placas Infratores Consumo</h3>
-    <div class="col-md-6">
+    <div class="col-sm-6">
             <div class="table-responsive table-bordered" style="max-height:220px">
             <table class="data-table2 ">
                 <thead>
@@ -72,7 +72,7 @@ for($i=0; $i<count($rankingPorMotorista); $i++){
         </div>
     </div>
 
-    <div class="col-md-6">
+    <div class="col-sm-6">
             <canvas id="placaChart"style="border-style:solid"></canvas>
     </div>
 </div>
@@ -149,14 +149,33 @@ var ctx3 = document.getElementById("placaChart").getContext('2d');
         let coluns = table.columns({ filter : 'applied'}).data();
         let motoristaFilter = coluns[0];
         let mediaKmLitro = coluns[1];
+        let str
+        let motoristaFilterLoop = [];
+        let mediaKmLitroLoop = [];
+        for ( i = 0; i < 8 ; i++){
+                str = String(motoristaFilter[i]);
+                motoristaFilter[i] = str.substring(0, 12);
+                motoristaFilterLoop.push(motoristaFilter[i]);
+                mediaKmLitroLoop.push(mediaKmLitro[i]);
+                
+            };
         myChart.destroy();
         myChart = new Chart(ctx, {
             type: 'line',
+            options: {
+                        scales: {
+                            xAxes: [{
+                                ticks: {
+                                    fontSize: 8
+                                }
+                                }]
+                            }
+                        },
             data:{
-                labels:motoristaFilter,
+                labels:motoristaFilterLoop,
                 datasets:[{
                     label:'Consumo por motorista',
-                    data:mediaKmLitro,
+                    data:mediaKmLitroLoop,
                     pointBackgroundColor:['lightblue',
                     'lightgreen',
                     'yellow',
@@ -174,14 +193,30 @@ var ctx3 = document.getElementById("placaChart").getContext('2d');
         let coluns = table2.columns({ filter : 'applied'}).data();
         let placaFilter = coluns[0];
         let mediaKmLitro = coluns[1];
+        let placaFilterLoop = [];
+        let mediaKmLitroLoop = [];
+        for ( i = 0; i < 8 ; i++){
+                placaFilterLoop.push(placaFilter[i]);
+                mediaKmLitroLoop.push(mediaKmLitro[i]);
+                
+            };
         myChart2.destroy();
         myChart2 = new Chart(ctx3, {
             type: 'line',
+             options: {
+                        scales: {
+                            xAxes: [{
+                                ticks: {
+                                    fontSize: 8
+                                }
+                                }]
+                            }
+                        },
             data:{
-                labels:placaFilter,
+                labels:placaFilterLoop,
                 datasets:[{
                     label:'Consumo por motorista',
-                    data:mediaKmLitro,
+                    data:mediaKmLitroLoop,
                     pointBackgroundColor:['lightblue',
                     'lightgreen',
                     'yellow',
