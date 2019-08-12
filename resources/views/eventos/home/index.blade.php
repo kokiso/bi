@@ -35,9 +35,10 @@
                 <th> DURACAO </th>
             </tr>
             </thead>
-            <tbody>
+            <tbody id="table-body">
             </tbody>
         </table>
+        <button id="button-pack" class="btn btn-primary" style="float:right" data-oldvalue="0"> Proximo Pacote</button>
     </div>
 </div>
     @section('js')
@@ -189,7 +190,49 @@
                     { data: 'duracao', name: 'duracao' }
                 ]
     } );
+
         } );
+        $("#button-pack").click(function(){
+            $('#data-table').DataTable().destroy();
+            $('#table-body').empty();
+            let button = document.getElementById("button-pack");
+            let counter = Number(button.getAttribute("data-oldvalue")) + 10000;
+            $('#data-table').DataTable( {
+            "displayLength": 15, //Começaremos com apenas 15 registros
+            "paginate": true,    //Queremos paginas
+            "filter": true,      //Queremos que o usuário possa procurar entre os 5k registros
+            "processing": true,
+            "serverSide": true,
+            "ajax": $.fn.dataTable.pipeline( {
+                url: 'evento',
+                type: 'GET',
+                "data": {
+                    "counter": counter
+                },
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                type: 'GET',
+                pages: 5 // number of pages to cache
+            } ),
+            columns:[
+                        { data: 'data', name: 'data' },
+                        { data: 'hora', name: 'hora' },
+                        { data: 'filial', name: 'filial' },
+                        { data: 'veiculo', name: 'veiculo' },
+                        { data: 'grupo_motorista', name: 'grupo_motorista' },
+                        { data: 'motorista', name: 'motorista' },
+                        { data: 'pedal_acionado', name: 'pedal_acionado' },
+                        { data: 'tipo_evento', name: 'tipo_evento' },
+                        { data: 'descricao_evento', name: 'descricao_evento' },
+                        { data: 'nome_cerca', name: 'nome_cerca' },
+                        { data: 'velocidade', name: 'velocidade' },
+                        { data: 'hodometro', name: 'hodometro' },
+                        { data: 'duracao', name: 'duracao' }
+                    ]
+        } );
+            button.setAttribute("data-oldvalue", counter);
+        });
         </script>
     @stop
 

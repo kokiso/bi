@@ -21,7 +21,14 @@ class EventoController extends Controller
 
     public function index(){
         if(request()->ajax()){
-            return DataTables::of(RelatorioEventos::all())->make();
+            if(!isset($_GET['counter'])){
+                return DataTables::of(RelatorioEventos::take(10000)->get())->make();
+            }
+            else{
+                $counter = $_GET['counter'];
+                return DataTables::of(RelatorioEventos::take(10000)->skip($counter)->get())->make();
+            }
+
         }
         return view ('eventos.home.index');
     }

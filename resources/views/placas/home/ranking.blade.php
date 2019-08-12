@@ -157,7 +157,7 @@ var ctx3 = document.getElementById("placaChart").getContext('2d');
                 motoristaFilter[i] = str.substring(0, 12);
                 motoristaFilterLoop.push(motoristaFilter[i]);
                 mediaKmLitroLoop.push(mediaKmLitro[i]);
-                
+
             };
         myChart.destroy();
         myChart = new Chart(ctx, {
@@ -198,7 +198,7 @@ var ctx3 = document.getElementById("placaChart").getContext('2d');
         for ( i = 0; i < 8 ; i++){
                 placaFilterLoop.push(placaFilter[i]);
                 mediaKmLitroLoop.push(mediaKmLitro[i]);
-                
+
             };
         myChart2.destroy();
         myChart2 = new Chart(ctx3, {
