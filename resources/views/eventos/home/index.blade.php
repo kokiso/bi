@@ -15,7 +15,7 @@
         font-size: 13px;
 </style>
 @section('content')
-<div class="col-md-12">
+<div class="col-sm-12">
     <div class="table-responsive" style="max-height:800px">
         <table id = 'data-table' class="display compact" style="width:100%">
             <thead class>

@@ -33,7 +33,7 @@ for($i=0; $i<count($base); $i++){
 @section('content')
 <div class="row">
     <h3 style="text-align:center">PICOS DE VELOCIDADE</h3>
-    <div class="col-md-16">
+    <div class="col-sm-12">
         <div class="table-responsive" style="max-height:320px">
             <table class="table">
                 <thead>
@@ -57,7 +57,7 @@ for($i=0; $i<count($base); $i++){
             </table>
         </div>
     </div>
-    <div class="col-md-12">
+    <div class="col-sm-12">
             <div class="table-responsive" style="max-height:320px">
                 <table class="table">
                     <thead>
@@ -87,7 +87,7 @@ for($i=0; $i<count($base); $i++){
 </div>
 
 <div class="row">
-    <div class="col-md-6" style="border:black,1px,1px,1px,1px">
+    <div class="col-sm-6" style="border:black,1px,1px,1px,1px">
             <div class="table-responsive" style="max-height:220px">
             <table id="table1" class="data-table1">
                 <thead style="background-color:lightgray">
@@ -108,12 +108,12 @@ for($i=0; $i<count($base); $i++){
             </table>
         </div>
     </div>
-    <div class="col-md-6">
+    <div class="col-sm-6">
         <canvas id="baseVinculoChart"style="border-style:solid"></canvas>
     </div>
 
     <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
-    <div class="col-md-6">
+    <div class="col-sm-6">
         <div class="table-responsive" style="max-height:320px">
             <table  id="table2" class="data-table">
                 <thead>
@@ -133,10 +133,10 @@ for($i=0; $i<count($base); $i++){
             </table>
         </div>
     </div>
-    <div class="col-md-6">
+    <div class="col-sm-6">
         <canvas id="analiticoMotoristaChart"style="border-style:solid"></canvas>
     </div>
-    <div class="col-md-6">
+    <div class="col-sm-6">
         <canvas id="motoristaInfracoesChart"style="border-style:solid"></canvas>
     </div>
 </div>
@@ -187,7 +187,7 @@ for($i=0; $i<count($base); $i++){
                         scales: {
                             xAxes: [{
                                 ticks: {
-                                    fontSize: 10
+                                    fontSize: 8
                                 }
                                 }]
                             }
@@ -214,7 +214,7 @@ for($i=0; $i<count($base); $i++){
                         scales: {
                             xAxes: [{
                                 ticks: {
-                                    fontSize: 10
+                                    fontSize: 8
                                 }
                                 }]
                             }
@@ -243,9 +243,12 @@ for($i=0; $i<count($base); $i++){
             let coluns = table.columns({ filter : 'applied'}).data();
             let baseVinculoFilter = coluns[0];
             let countFilter = coluns[1];
+            let str
             let baseVinculoFilterLoop = [];
             let countFilterLoop = [];
             for ( i = 0; i < 8 ; i++){
+                str = String(baseVinculoFilter[i]);
+                baseVinculoFilter[i] = str.substring(0, 12);
                 baseVinculoFilterLoop.push(baseVinculoFilter[i]);
                 countFilterLoop.push(countFilter[i]);
                 
@@ -257,7 +260,7 @@ for($i=0; $i<count($base); $i++){
                         scales: {
                             xAxes: [{
                                 ticks: {
-                                    fontSize: 10
+                                    fontSize: 8
                                 }
                                 }]
                             }
@@ -285,9 +288,12 @@ for($i=0; $i<count($base); $i++){
             let coluns = table2.columns({ filter : 'applied'}).data();
             let motoristaFilter = coluns[0];
             let infracaoFilter = coluns[1];
+            let str
             let infracaoFilterLoop = [];
             let motoristaFilterLoop = [];
             for ( i = 0; i < 8 ; i++){
+                str = String(motoristaFilter[i]);
+                motoristaFilter[i] = str.substring(0, 12);
                 motoristaFilterLoop.push(motoristaFilter[i]);
                 infracaoFilterLoop.push(infracaoFilter[i]);
                 

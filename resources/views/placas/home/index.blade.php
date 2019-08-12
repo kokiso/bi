@@ -17,13 +17,13 @@
     }
 </style>
 @section('content')
-<div class="col-md-12">
+<div class="col-sm-12">
     <div class="table-responsive" style="max-height:800px">
         <table id = 'data-table' class="display compact" style="width:100%">
             <thead style="text-align:center">
             <tr>
                 <th> NOME </th>
-                <th> PLACA </th>
+                <th> FROTA </th>
                 <th> INICIO	HODOMETRO</th>
                 <th> FIM HODOMETRO_INI </th>
                 <th> KM_Rodado(km)</th>
