@@ -85,7 +85,7 @@ return [
                 'host'     => 'localhost',
                 'database' => 'BI',
                 'username' => 'sa',
-                'password' => '@Ak167943',
+                'password' => 'a1111111',
                 'prefix'   => '',
             ),
 

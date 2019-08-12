@@ -1,3 +1,4 @@
+<meta name="csrf-token" content="{{ csrf_token() }}">
 @extends('adminlte::page')
 
 @section('title', 'AdminLTE')
@@ -174,6 +175,10 @@ $('#data-table').DataTable( {
     "serverSide": true,
     "ajax": $.fn.dataTable.pipeline( {
         url: 'placa',
+        headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            },
+        type:"GET",
         pages: 5 // number of pages to cache
     } ),
     columns:[
